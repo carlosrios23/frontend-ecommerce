@@ -1,0 +1,449 @@
+/* frontend-ecommerce/src/assets/styles/Sidebar.css */
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Turret+Road:wght@200;300;400;500;700;800&display=swap');
+
+:root {
+    --nav-width: 92px; /* Ancho de la barra lateral colapsada */
+    --nav-expanded-width: 250px; /* Ancho de la barra lateral expandida (ajusta este valor) */
+    --header-height: 3rem; /* Altura estándar del header */
+
+    --first-color: #0C5DF4; /* Azul brillante para elementos interactivos */
+    --bg-color: #12192C; /* Color de fondo de la barra lateral (azul oscuro) */
+    --sub-color: #B6CEFC; /* Color secundario, para texto normal en la barra lateral */
+    --white-color: #FFF; /* Blanco para texto resaltado */
+
+    --normal-font-size: 1rem;
+    --small-font-size: 0.875rem;
+
+    --font-poppins: 'Poppins', sans-serif;
+    --font-turret: 'Turret Road', cursive; /* Fuente para el logo */
+    --z-fixed: 100; /* Z-index para elementos fijos */
+
+    /* Variables de fallback que mencionaste en CSS pero no definiste en :root */
+    --color-cream-pale: #ECEFCA;
+    --color-dark-blue: #213448;
+    --color-text-light: #fff;
+    --color-medium-blue: #547792;
+}
+
+*,
+::before,
+::after {
+    box-sizing: border-box;
+}
+
+body {
+    margin: var(--header-height) 0 0 0; /* Margen superior para el header fijo */
+    padding: 0 1rem; /* Padding a los lados del body */
+    font-family: var(--font-poppins);
+    font-size: var(--normal-font-size);
+    transition: .5s; /* Transición para el padding del body */
+    background-color: var(--color-cream-pale); /* Usa la variable de App.css si está disponible, o un fallback */
+    min-height: 100vh; /* Asegura que el body ocupe al menos toda la altura de la ventana */
+}
+
+/* Clase para empujar el contenido del body cuando la sidebar está expandida */
+body.body-pd {
+    /* Este padding debe aplicarse a ambos, mobile y desktop, cuando la sidebar está expandida */
+    padding-left: calc(var(--nav-expanded-width) + 1rem);
+}
+
+a {
+    text-decoration: none;
+}
+
+/* --- HEADER --- */
+.header {
+    width: 100%;
+    height: var(--header-height);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1rem;
+    background-color: var(--color-dark-blue);
+    color: var(--color-text-light);
+    z-index: var(--z-fixed);
+    transition: .5s;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+/* En el header, también necesitamos moverlo cuando la sidebar se expande */
+.header.header-pd { /* Nueva clase para el header */
+    padding-left: calc(var(--nav-expanded-width) + 2rem); /* Ajusta según tu diseño */
+}
+
+
+.header-toggle {
+    color: var(--white-color); /* Color del icono de hamburguesa del header */
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: block; /* Visible por defecto */
+}
+
+.header-img {
+    width: 35px;
+    height: 35px;
+    display: flex;
+    justify-content: center;
+    border-radius: 50%;
+    overflow: hidden;
+    background-color: var(--color-medium-blue); /* Fondo para la imagen de perfil si no hay imagen */
+}
+
+.header-img img {
+    width: 40px;
+}
+
+/* --- BARRA LATERAL (l-navbar) --- */
+.l-navbar {
+    position: fixed;
+    top: 0;
+    left: -100%; /* Oculta la navbar fuera de la pantalla por defecto en mobile */
+    width: var(--nav-expanded-width); /* En mobile, la sidebar siempre se abre a su ancho expandido */
+    height: 100vh;
+    background-color: var(--bg-color);
+    padding: 1rem 1rem 0 0;
+    z-index: var(--z-fixed);
+    transition: width .5s ease-in-out, left .5s ease-in-out; /* Transición para ancho y posición */
+    overflow-y: auto; /* Para scroll si hay muchos elementos */
+
+    display: flex; /* Para organizar los elementos internos verticalmente */
+    flex-direction: column;
+    align-items: flex-start; /* Alinea los elementos a la izquierda */
+}
+
+/* Clase para expandir la barra lateral (aplicada por JS) */
+.l-navbar.expander {
+    left: 0; /* Hace visible la navbar al activarse */
+    width: var(--nav-expanded-width); /* Asegura que se expanda a este ancho */
+}
+
+.nav {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    width: 100%; /* Asegura que el nav ocupe todo el ancho de l-navbar */
+}
+
+/* El icono de hamburguesa dentro de la navbar (el que quieres ver en desktop colapsado) */
+.nav-menu-icon {
+    color: var(--white-color);
+    font-size: 1.5rem;
+    cursor: pointer;
+    margin-bottom: 2rem;
+    padding-left: 0.8rem;
+    opacity: 0; /* Oculto por defecto */
+    transition: opacity .5s ease-in-out;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: var(--nav-width); /* Asegura que tenga altura para ser visible */
+    width: var(--nav-width); /* Asegura que tenga ancho para ser visible */
+}
+
+/* Mostrar el icono de menú cuando la navbar está colapsada en desktop (solo si es Desktop) */
+@media screen and (min-width: 768px) {
+    .nav-menu-icon {
+        opacity: 1; /* Visible en desktop cuando la sidebar está colapsada */
+        pointer-events: auto; /* Habilitar interacción */
+    }
+    .l-navbar.expander .nav-menu-icon {
+        opacity: 0; /* Oculto cuando la sidebar está expandida en desktop */
+        pointer-events: none;
+    }
+}
+/* Ocultar el icono de menú dentro de la navbar en mobile (ya que se usa el del header) */
+@media screen and (max-width: 767px) {
+    .nav-menu-icon {
+        display: none;
+    }
+}
+
+.nav-brand {
+    font-family: var(--font-turret);
+    font-size: 1.25rem;
+    color: var(--white-color);
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+    padding-left: 0.8rem;
+    margin-top: -2.5rem; /* Ajuste para mover el brand hacia arriba */
+    transition: margin-top .5s ease-in-out;
+}
+
+.l-navbar.expander .nav-brand {
+    margin-top: 0; /* Cuando se expande, el margen vuelve a 0 */
+}
+
+
+.nav-brand-icon {
+    font-size: 1.5rem;
+    margin-right: 1rem;
+}
+
+.nav-brand-name {
+    opacity: 0;
+    transition: opacity .5s ease-in-out;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.l-navbar.expander .nav-brand-name {
+    opacity: 1;
+}
+
+.nav-list {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.nav-link {
+    color: var(--sub-color);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    padding: 1rem 0;
+    margin-bottom: 1rem;
+    border-radius: .5rem;
+    transition: .3s;
+    cursor: pointer;
+}
+
+.nav-link:hover {
+    color: var(--white-color);
+    background-color: var(--first-color);
+}
+
+.nav-link-icon {
+    font-size: 1.5rem;
+    margin-right: 1rem;
+    padding-left: 0.8rem;
+}
+
+.nav-link-name {
+    opacity: 0;
+    transition: opacity .5s ease-in-out;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.l-navbar.expander .nav-link-name {
+    opacity: 1;
+}
+
+.nav-link.active {
+    color: var(--white-color);
+    background-color: var(--first-color);
+}
+
+.logout-button-sidebar {
+    background: none;
+    border: none;
+    width: 100%;
+    text-align: left;
+    padding: 0;
+    cursor: pointer;
+    color: var(--sub-color);
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    padding: 1rem 0;
+    margin-bottom: 1rem;
+    border-radius: .5rem;
+    transition: .3s;
+}
+
+.logout-button-sidebar:hover {
+    color: var(--white-color);
+    background-color: var(--first-color);
+}
+
+/* Estilos para submenús */
+/* Modificación: El 'collapse' ahora es el contenedor que activará el submenú */
+.collapse {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 1rem 0;
+    margin-bottom: 1rem;
+    border-radius: .5rem;
+    transition: .3s;
+    cursor: pointer;
+    color: var(--sub-color);
+}
+
+.collapse:hover {
+    background-color: var(--first-color);
+    color: var(--white-color);
+}
+
+/* Este es el icono de chevron */
+.collapse-link.collapse-icon { /* Usamos ambas clases para mayor especificidad */
+    font-size: 1.25rem;
+    transition: transform .5s;
+    color: inherit;
+    margin-left: auto;
+    margin-right: 0.8rem;
+}
+
+.collapse-menu {
+    height: 0;
+    overflow: hidden;
+    transition: height .5s ease-in-out, padding .5s ease-in-out; /* También transiciona el padding */
+    padding: 0;
+    width: 100%;
+    /* Ocultar los nombres de los sub-enlaces si la sidebar está colapsada */
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .5s ease-in-out;
+}
+
+.collapse-menu.showCollapse {
+    height: auto; /* Permite que el contenido defina la altura */
+    padding: 0.75rem 0; /* Ajusta el padding para los sublinks */
+    opacity: 1;
+    pointer-events: auto;
+}
+
+/* Cuando la sidebar está colapsada (no tiene 'expander'), ocultar los sub-enlaces */
+.l-navbar:not(.expander) .collapse-menu {
+    height: 0; /* Asegura que esté colapsado */
+    padding: 0;
+    opacity: 0;
+    pointer-events: none;
+    transition: none; /* Deshabilita la transición para una ocultación instantánea al colapsar la barra lateral */
+}
+
+
+.collapse-sub-link {
+    color: var(--sub-color);
+    font-size: var(--small-font-size);
+    padding: 0.5rem 2.25rem;
+    display: block;
+}
+
+.collapse-sub-link:hover {
+    color: var(--white-color);
+}
+
+.rotate {
+    transform: rotate(180deg);
+    transition: .5s;
+}
+
+/* --- Media Queries para responsividad --- */
+
+/* Desktop (>= 768px de ancho) */
+@media screen and (min-width: 768px) {
+    /* Por defecto, la barra lateral está colapsada en desktop */
+    body {
+        padding-left: calc(var(--nav-width) + 1rem); /* Margen para sidebar colapsado */
+    }
+
+    .l-navbar {
+        left: 0; /* Visible por defecto en desktop */
+        width: var(--nav-width); /* Siempre empieza colapsada por defecto */
+        padding: 1rem 0; /* Ajuste para desktop */
+    }
+
+    .header {
+        height: calc(var(--header-height) + 1rem);
+        padding-left: calc(var(--nav-width) + 2rem); /* Alineación del header con la barra lateral colapsada */
+    }
+
+    .header-toggle {
+        display: none; /* Oculta el icono de hamburguesa del header en desktop */
+    }
+
+    /* Lógica de HOVER para desktop */
+    @media (hover: hover) {
+        .l-navbar:hover {
+            width: var(--nav-expanded-width); /* Expande al hacer hover */
+        }
+
+        .l-navbar:hover .nav-brand-name,
+        .l-navbar:hover .nav-link-name {
+            opacity: 1; /* Muestra los nombres al hacer hover */
+        }
+
+        .l-navbar:hover .nav-menu-icon {
+            opacity: 0; /* Oculta el icono de hamburguesa al expandir por hover */
+            pointer-events: none; /* Deshabilita clics */
+        }
+
+        /* Ajusta el padding del body y del header cuando la barra lateral se expande por hover */
+        body:has(.l-navbar:hover) {
+            padding-left: calc(var(--nav-expanded-width) + 1rem);
+        }
+
+        .header:has(.l-navbar:hover) {
+            padding-left: calc(var(--nav-expanded-width) + 2rem);
+        }
+    }
+
+    /* Si la barra lateral tiene la clase 'expander' (ej: si se fuerza con JS en desktop) */
+    .l-navbar.expander { /* Esta regla tiene más especificidad, así que aplicará */
+        width: var(--nav-expanded-width);
+    }
+    .l-navbar.expander .nav-menu-icon {
+        opacity: 0; /* Oculta el icono también cuando se expande por la clase 'expander' */
+        pointer-events: none;
+    }
+
+    /* Si el l-navbar.expander se activa en desktop, también mostrar nombres */
+    .l-navbar.expander .nav-brand-name,
+    .l-navbar.expander .nav-link-name {
+        opacity: 1;
+    }
+}
+
+/* Mobile (<= 767px de ancho) */
+@media screen and (max-width: 767px) {
+    /* Por defecto, la barra lateral está oculta en mobile */
+    body {
+        padding-left: 1rem; /* Sin padding adicional del sidebar por defecto */
+    }
+
+    .l-navbar {
+        left: -100%; /* Oculta la navbar fuera de la pantalla por defecto en mobile */
+        width: var(--nav-expanded-width); /* En mobile, la sidebar siempre se abre a su ancho expandido */
+        padding: 1rem; /* Ajuste de padding para mobile */
+    }
+
+    /* Cuando la navbar está expandida en mobile (por clase expander) */
+    .l-navbar.expander {
+        left: 0; /* Hace visible la navbar al activarse */
+    }
+
+    /* Ocultar el icono de menú dentro de la navbar en mobile (ya que se usa el del header) */
+    .nav-menu-icon {
+        display: none;
+    }
+
+    /* Mostrar siempre el nav-logo y nav-name en mobile cuando la navbar está abierta (clase expander) */
+    .l-navbar.expander .nav-brand-name, /* Corregido: nav-brand-name */
+    .l-navbar.expander .nav-link-name { /* Corregido: nav-link-name */
+        opacity: 1;
+    }
+
+    /* El nav-brand en mobile no necesita margin-top especial */
+    .nav-brand {
+        margin-top: 0;
+        padding-left: 0;
+        justify-content: center; /* Centrar el logo en mobile si el icono no está */
+    }
+    .nav-brand-icon {
+        margin-right: 0.5rem; /* Ajuste para el icono del brand en mobile */
+    }
+
+    .header-toggle {
+        display: block; /* Asegura que el toggle del header esté visible en mobile */
+    }
+}
