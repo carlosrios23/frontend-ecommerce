@@ -21,7 +21,7 @@ import './App.css';
 
 function App() {
     const [estaLogueado, setEstaLogueado] = useState(false);
-    const [esAdmin, setEsAdmin] = useState(false);
+    const [esAdmin, setEsAdmin] = useState(undefined);
     const [conteoItemsCarrito, setConteoItemsCarrito] = useState(0);
 
     // Función para obtener y verificar el token y el rol del usuario
