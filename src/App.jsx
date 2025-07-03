@@ -84,7 +84,9 @@ function App() {
         setConteoItemsCarrito(conteo);
     };
 
-    if (esAdmin === undefined) return null;
+if (esAdmin === undefined || estaLogueado === undefined) {
+    return <div className="text-center mt-5">Cargando...</div>;
+}
 
     return (
         <Router>

@@ -33,7 +33,7 @@ function Login({ alIniciarSesion }) { // Prop para la función de inicio de sesi
 
             const { token, usuario } = response.data;
             const role = usuario ? usuario.role : 'user';
-            localStorage.setItem('userRole', role); // <- ESTA ES LA LÍNEA FALTANTE
+            localStorage.setItem('userRole', role); 
 
 
             if (typeof alIniciarSesion === 'function') {
@@ -41,6 +41,15 @@ function Login({ alIniciarSesion }) { // Prop para la función de inicio de sesi
             }
 
             setMensaje('Inicio de sesión exitoso. ¡Bienvenido!');
+
+            // Espera brevemente para permitir que el estado esAdmin se actualice correctamente
+            setTimeout(() => {
+                if (role === 'admin') {
+                    navegar('/agregar-producto');
+                } else {
+                    navegar('/');
+                }
+            }, 100); // 100 milisegundos son suficientes
 
             if (role === 'admin') {
                 navegar('/agregar-producto');
