@@ -45,9 +45,9 @@ function Login({ alIniciarSesion }) { // Prop para la función de inicio de sesi
             // Espera brevemente para permitir que el estado esAdmin se actualice correctamente
             setTimeout(() => {
                 if (role === 'admin') {
-                    navegar('/agregar-producto');
+                    window.location.assign('/agregar-producto');
                 } else {
-                    navegar('/');
+                    window.location.assign('/');
                 }
             }, 100); // 100 milisegundos son suficientes
 
