@@ -10,8 +10,8 @@ function ProtectedRoute({ children, esAdmin }) {
         return <Navigate to="/login" replace />;
     }
 
-    if (esAdmin === undefined || esAdmin === null) {
-        return <div style={{ padding: "2rem", textAlign: "center" }}>Cargando...</div>;
+    if (esAdmin === undefined) {
+        return null; // evita que React monte componentes aún
     }
 
     if (esAdmin && userRole !== 'admin') {

@@ -1,20 +1,18 @@
 // frontend-ecommerce/src/App.jsx
 
 import React, { useState, useEffect, useCallback } from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; // Eliminado useNavigate si no se usa directamente aquí
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; 
 import { jwtDecode } from 'jwt-decode'; // Para decodificar el token
 import 'bootstrap/dist/css/bootstrap.min.css'; 
-import ListaProductos from './ListaProductos'; // Renombrado de ProductList
-import AddProductForm from './components/AddProductForm'; // Asumiendo este nombre
+import ListaProductos from './ListaProductos'; 
+import AddProductForm from './components/AddProductForm'; 
 import Register from './components/Register';
 import Login from './components/Login';
 import Cart from './components/Cart';
 import Sidebar from './components/Sidebar';
 import ProtectedRoute from './components/ProtectedRoute'; // Componente de ruta protegida
-
-// Nuevos componentes que implementaremos más adelante (o que ya tienes con este nombre)
-import EditProductForm from './components/EditProductForm'; // Asumiendo este nombre
-import DetalleProducto from './components/DetalleProducto'; // Asumiendo este nombre
+import EditProductForm from './components/EditProductForm'; 
+import DetalleProducto from './components/DetalleProducto'; 
 
 // Importa tus estilos CSS principales
 import './App.css'; 
@@ -85,6 +83,8 @@ function App() {
     const actualizarConteoItemsCarrito = (conteo) => {
         setConteoItemsCarrito(conteo);
     };
+
+    if (esAdmin === undefined) return null;
 
     return (
         <Router>
