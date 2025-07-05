@@ -1,5 +1,3 @@
-// frontend-ecommerce/src/EditProductForm.jsx
-
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -105,23 +103,7 @@ function EditProductForm() {
 
         // Lógica para la imagen:
         if (nuevaImagenArchivo) {
-            // Si el usuario seleccionó un nuevo archivo, lo adjuntamos
             formData.append('imagen', nuevaImagenArchivo);
-        } else {
-            // Si no hay nuevo archivo, pero ya existe una URL de imagen, la enviamos
-            // Esto es crucial para que el backend sepa que la imagen no debe cambiar
-            // A veces, el backend necesita un indicador. Podríamos enviar 'imagen' como la URL
-            // o un campo como 'mantenerImagenActual: true'
-            // Por ahora, tu backend ya está configurado para manejar req.file.path.
-            // Si req.file no existe (porque no se subió un nuevo archivo), no se actualizará la imagen
-            // en el controlador a menos que la envíes como un campo aparte.
-            // La implementación actual del backend con Multer en la ruta
-            // implica que si no se envía un archivo, req.file será `undefined`.
-            // Por lo tanto, no necesitamos adjuntar la `imagenUrlActual` explícitamente como 'imagen' en formData
-            // a menos que tu backend lo espere para diferenciar entre "sin cambio" y "eliminar imagen".
-            // Para mantener la consistencia, podríamos enviarlo si no hay nueva imagen,
-            // pero el Multer.single('imagen') sobrescribirá si hay un archivo.
-            // Lo más limpio es que el backend maneje si req.file existe o no.
         }
 
         // Incluir los campos de descuento
@@ -129,12 +111,10 @@ function EditProductForm() {
         formData.append('fechaInicioDescuento', fechaInicioDescuento === '' ? '' : fechaInicioDescuento);
         formData.append('fechaFinDescuento', fechaFinDescuento === '' ? '' : fechaFinDescuento);
 
-
         try {
             await axios.put(`${BACKEND_URL}/api/productos/${id}`, formData, {
                 headers: {
                     Authorization: `Bearer ${token}`,
-                    // 'Content-Type': 'multipart/form-data' se establece automáticamente con FormData
                 }
             });
 
@@ -155,33 +135,33 @@ function EditProductForm() {
 
     if (cargando) {
         return (
-            <Container className="my-5 text-center">
+            <Container className="loading-container">
                 <Spinner animation="border" role="status">
                     <span className="visually-hidden">Cargando datos del producto...</span>
                 </Spinner>
-                <p className="mt-3">Cargando datos del producto...</p>
+                <p className="loading-text">Cargando datos del producto...</p>
             </Container>
         );
     }
 
     if (error && !cargando) {
         return (
-            <Container className="my-5 text-center">
-                <Alert variant="danger">{error}</Alert>
-                <Button variant="primary" onClick={() => navegar('/')}>Volver a la Tienda</Button>
+            <Container className="error-container">
+                <Alert className="error-alert">{error}</Alert>
+                <Button className="primary-button" onClick={() => navegar('/')}>Volver a la Tienda</Button>
             </Container>
         );
     }
 
     return (
-        <Container className="my-5">
-            <h2 className="text-center mb-4">Editar Producto</h2>
+        <Container className="edit-product-container">
+            <h2 className="edit-product-title">Editar Producto</h2>
 
-            {mensaje && <Alert variant="success" onClose={() => setMensaje('')} dismissible>{mensaje}</Alert>}
-            {error && <Alert variant="danger" onClose={() => setError('')} dismissible>{error}</Alert>}
+            {mensaje && <Alert className="success-message" onClose={() => setMensaje('')} dismissible>{mensaje}</Alert>}
+            {error && <Alert className="error-message" onClose={() => setError('')} dismissible>{error}</Alert>}
 
-            <Form onSubmit={manejarSubmit}>
-                <Form.Group className="mb-3" controlId="formNombre">
+            <Form onSubmit={manejarSubmit} className="product-form">
+                <Form.Group className="form-group" controlId="formNombre">
                     <Form.Label>Nombre:</Form.Label>
                     <Form.Control
                         type="text"
@@ -191,7 +171,7 @@ function EditProductForm() {
                     />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formDescripcion">
+                <Form.Group className="form-group" controlId="formDescripcion">
                     <Form.Label>Descripción:</Form.Label>
                     <Form.Control
                         as="textarea"
@@ -199,10 +179,10 @@ function EditProductForm() {
                         value={descripcion}
                         onChange={(e) => setDescripcion(e.target.value)}
                         required
-                    ></Form.Control>
+                    />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formPrecio">
+                <Form.Group className="form-group" controlId="formPrecio">
                     <Form.Label>Precio:</Form.Label>
                     <Form.Control
                         type="number"
@@ -214,7 +194,7 @@ function EditProductForm() {
                     />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formStock">
+                <Form.Group className="form-group" controlId="formStock">
                     <Form.Label>Stock:</Form.Label>
                     <Form.Control
                         type="number"
@@ -226,7 +206,7 @@ function EditProductForm() {
                     />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formCategoria">
+                <Form.Group className="form-group" controlId="formCategoria">
                     <Form.Label>Categoría:</Form.Label>
                     <Form.Control
                         type="text"
@@ -236,30 +216,30 @@ function EditProductForm() {
                     />
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formNuevaImagen">
+                <Form.Group className="form-group" controlId="formNuevaImagen">
                     <Form.Label>Imagen del Producto:</Form.Label>
                     {imagenUrlActual && (
-                        <div className="mb-2">
+                        <div className="current-image-container">
                             <p>Imagen actual:</p>
-                            <Image src={imagenUrlActual} alt="Imagen actual del producto" fluid thumbnail style={{ maxWidth: '200px', maxHeight: '200px' }} />
+                            <Image src={imagenUrlActual} alt="Imagen actual del producto" className="current-image" />
                         </div>
                     )}
                     <Form.Control
                         type="file"
                         accept="image/*"
                         onChange={(e) => setNuevaImagenArchivo(e.target.files[0])}
+                        className="image-upload"
                     />
-                    <Form.Text className="text-muted">
+                    <Form.Text className="form-text">
                         Selecciona un nuevo archivo de imagen para reemplazar la actual.
                         Si no seleccionas nada, la imagen actual se mantendrá.
                     </Form.Text>
                 </Form.Group>
 
-                {/* Nuevos campos para descuentos */}
-                <hr className="my-4" /> {/* Separador visual para descuentos */}
-                <h4 className="mb-3">Configuración de Descuento (Opcional)</h4>
+                <hr className="form-divider" />
+                <h4 className="discount-section-title">Configuración de Descuento (Opcional)</h4>
 
-                <Form.Group className="mb-3" controlId="formPorcentajeDescuento">
+                <Form.Group className="form-group" controlId="formPorcentajeDescuento">
                     <Form.Label>Porcentaje de Descuento (%):</Form.Label>
                     <Form.Control
                         type="number"
@@ -270,37 +250,37 @@ function EditProductForm() {
                         step="0.01"
                         placeholder="Ej: 10 para 10%"
                     />
-                    <Form.Text className="text-muted">
+                    <Form.Text className="form-text">
                         Ingresa un valor entre 0 y 100. Deja vacío para no aplicar descuento.
                     </Form.Text>
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formFechaInicioDescuento">
+                <Form.Group className="form-group" controlId="formFechaInicioDescuento">
                     <Form.Label>Fecha de Inicio del Descuento:</Form.Label>
                     <Form.Control
                         type="date"
                         value={fechaInicioDescuento}
                         onChange={(e) => setFechaInicioDescuento(e.target.value)}
                     />
-                    <Form.Text className="text-muted">
+                    <Form.Text className="form-text">
                         El descuento será válido a partir de esta fecha.
                     </Form.Text>
                 </Form.Group>
 
-                <Form.Group className="mb-3" controlId="formFechaFinDescuento">
+                <Form.Group className="form-group" controlId="formFechaFinDescuento">
                     <Form.Label>Fecha de Fin del Descuento:</Form.Label>
                     <Form.Control
                         type="date"
                         value={fechaFinDescuento}
                         onChange={(e) => setFechaFinDescuento(e.target.value)}
                     />
-                    <Form.Text className="text-muted">
+                    <Form.Text className="form-text">
                         El descuento expirará después de esta fecha.
                     </Form.Text>
                 </Form.Group>
 
-                <div className="d-flex justify-content-end gap-2">
-                    <Button variant="primary" type="submit" disabled={enviando}>
+                <div className="form-actions">
+                    <Button className="submit-button" type="submit" disabled={enviando}>
                         {enviando ? (
                             <>
                                 <Spinner
@@ -309,14 +289,15 @@ function EditProductForm() {
                                     size="sm"
                                     role="status"
                                     aria-hidden="true"
+                                    className="submit-spinner"
                                 />
-                                <span className="ms-2">Guardando...</span>
+                                <span className="submit-text">Guardando...</span>
                             </>
                         ) : (
                             'Actualizar Producto'
                         )}
                     </Button>
-                    <Button variant="secondary" onClick={() => navegar('/')} disabled={enviando}>
+                    <Button className="cancel-button" onClick={() => navegar('/')} disabled={enviando}>
                         Cancelar
                     </Button>
                 </div>

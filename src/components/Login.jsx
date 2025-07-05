@@ -1,5 +1,3 @@
-// frontend-ecommerce/src/components/Login.jsx
-
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
@@ -66,15 +64,14 @@ function Login({ alIniciarSesion }) { // Prop para la función de inicio de sesi
     };
 
     return (
-        <Container className="auth-container d-flex justify-content-center align-items-center min-vh-100">
-            <Form onSubmit={manejarSubmit} className="form-container">
-                {/* Título con clase específica y margen inferior (mb-4 es de Bootstrap para margen-bottom) */}
-                <h2 className="login-title pb-3">Iniciar Sesión</h2> {/* pb-3 añade un padding inferior */}
+        <Container className="login-container">
+            <Form onSubmit={manejarSubmit} className="login-form">
+                <h2 className="login-title">Iniciar Sesión</h2>
 
-                {mensaje && <p className="success-message">{mensaje}</p>}
-                {error && <p className="error-message">{error}</p>}
+                {mensaje && <p className="login-success-message">{mensaje}</p>}
+                {error && <p className="login-error-message">{error}</p>}
 
-                <Form.Group className="mb-3">
+                <Form.Group className="login-form-group">
                     <Form.Label htmlFor="login-email">Email:</Form.Label>
                     <Form.Control
                         type="email"
@@ -82,11 +79,12 @@ function Login({ alIniciarSesion }) { // Prop para la función de inicio de sesi
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
-                        disabled={cargando} // Deshabilita el campo mientras carga
+                        disabled={cargando}
+                        className="login-input"
                     />
                 </Form.Group>
 
-                <Form.Group className="mb-3">
+                <Form.Group className="login-form-group">
                     <Form.Label htmlFor="login-password">Contraseña:</Form.Label>
                     <Form.Control
                         type="password"
@@ -94,15 +92,15 @@ function Login({ alIniciarSesion }) { // Prop para la función de inicio de sesi
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
-                        disabled={cargando} // Deshabilita el campo mientras carga
+                        disabled={cargando}
+                        className="login-input"
                     />
                 </Form.Group>
 
                 <Button
-                    variant="primary"
                     type="submit"
-                    className="w-100 mt-3"
-                    disabled={cargando} // Deshabilita el botón mientras carga
+                    className="login-submit-button"
+                    disabled={cargando}
                 >
                     {cargando ? (
                         <>
@@ -112,6 +110,7 @@ function Login({ alIniciarSesion }) { // Prop para la función de inicio de sesi
                                 size="sm"
                                 role="status"
                                 aria-hidden="true"
+                                className="login-spinner"
                             />
                             {' '}Cargando...
                         </>
@@ -120,8 +119,8 @@ function Login({ alIniciarSesion }) { // Prop para la función de inicio de sesi
                     )}
                 </Button>
 
-                <p className="mt-3 text-center">
-                    ¿No tienes cuenta? <a href="/registro">Regístrate</a>
+                <p className="login-register-text">
+                    ¿No tienes cuenta? <a href="/registro" className="login-register-link">Regístrate</a>
                 </p>
             </Form>
         </Container>

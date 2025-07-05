@@ -25,21 +25,30 @@ function SearchBar({ onSearch }) {
     };
 
     return (
-        <Form onSubmit={handleSubmit} className="mb-4">
-            <InputGroup>
+        <Form onSubmit={handleSubmit} className="search-bar-form">
+            <InputGroup className="search-input-group">
                 <Form.Control
                     type="text"
                     placeholder="Buscar productos por nombre o descripción..."
                     value={searchTerm}
                     onChange={handleInputChange}
                     aria-label="Buscar productos"
+                    className="search-input"
                 />
                 {searchTerm && ( // Muestra el botón de limpiar solo si hay texto en la búsqueda
-                    <Button variant="outline-secondary" onClick={handleClearSearch}>
+                    <Button 
+                        variant="outline-secondary" 
+                        onClick={handleClearSearch}
+                        className="clear-search-button"
+                    >
                         X
                     </Button>
                 )}
-                <Button variant="primary" type="submit">
+                <Button 
+                    variant="primary" 
+                    type="submit"
+                    className="search-submit-button"
+                >
                     Buscar
                 </Button>
             </InputGroup>

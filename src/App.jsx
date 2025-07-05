@@ -3,6 +3,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'; 
 import { jwtDecode } from 'jwt-decode'; // Para decodificar el token
+import "normalize.css";
 import 'bootstrap/dist/css/bootstrap.min.css'; 
 import ListaProductos from './ListaProductos'; 
 import AddProductForm from './components/AddProductForm'; 

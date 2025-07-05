@@ -52,15 +52,14 @@ const Register = () => {
     };
 
     return (
-        <Container className="auth-container d-flex justify-content-center align-items-center min-vh-100">
-            <Form onSubmit={handleSubmit} className="form-container">
-                {/* Título con clase específica y margen inferior (pb-3 para padding-bottom) */}
-                <h2 className="register-title pb-3">Registro de Usuario</h2>
+        <Container className="register-container">
+            <Form onSubmit={handleSubmit} className="register-form">
+                <h2 className="register-title">Registro de Usuario</h2>
 
-                {message && <p className="success-message">{message}</p>}
-                {error && <p className="error-message">{error}</p>}
+                {message && <p className="register-success-message">{message}</p>}
+                {error && <p className="register-error-message">{error}</p>}
 
-                <Form.Group className="mb-3">
+                <Form.Group className="register-form-group">
                     <Form.Label htmlFor="register-nombre">Nombre:</Form.Label>
                     <Form.Control
                         type="text"
@@ -68,11 +67,12 @@ const Register = () => {
                         value={nombre}
                         onChange={(e) => setNombre(e.target.value)}
                         required
-                        disabled={cargando} // Deshabilita el campo mientras carga
+                        disabled={cargando}
+                        className="register-input"
                     />
                 </Form.Group>
 
-                <Form.Group className="mb-3">
+                <Form.Group className="register-form-group">
                     <Form.Label htmlFor="register-email">Email:</Form.Label>
                     <Form.Control
                         type="email"
@@ -80,11 +80,12 @@ const Register = () => {
                         value={email}
                         onChange={(e) => setEmail(e.target.value)}
                         required
-                        disabled={cargando} // Deshabilita el campo mientras carga
+                        disabled={cargando}
+                        className="register-input"
                     />
                 </Form.Group>
 
-                <Form.Group className="mb-3">
+                <Form.Group className="register-form-group">
                     <Form.Label htmlFor="register-password">Contraseña:</Form.Label>
                     <Form.Control
                         type="password"
@@ -92,15 +93,15 @@ const Register = () => {
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         required
-                        disabled={cargando} // Deshabilita el campo mientras carga
+                        disabled={cargando}
+                        className="register-input"
                     />
                 </Form.Group>
 
                 <Button
-                    variant="primary"
                     type="submit"
-                    className="w-100 mt-3"
-                    disabled={cargando} // Deshabilita el botón mientras carga
+                    className="register-submit-button"
+                    disabled={cargando}
                 >
                     {cargando ? (
                         <>
@@ -110,6 +111,7 @@ const Register = () => {
                                 size="sm"
                                 role="status"
                                 aria-hidden="true"
+                                className="register-spinner"
                             />
                             {' '}Cargando...
                         </>
@@ -118,8 +120,8 @@ const Register = () => {
                     )}
                 </Button>
 
-                <p className="mt-3 text-center">
-                    ¿Ya tienes cuenta? <a href="/login">Inicia Sesión</a>
+                <p className="register-login-text">
+                    ¿Ya tienes cuenta? <a href="/login" className="register-login-link">Inicia Sesión</a>
                 </p>
             </Form>
         </Container>

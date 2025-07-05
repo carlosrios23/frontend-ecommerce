@@ -50,7 +50,7 @@ function DetalleProducto({ esAdmin, alActualizarConteoCarrito }) {
             setCargando(true);
             setError(null);
             try {
-            const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/productos/${id}`);
+                const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/productos/${id}`);
                 setProducto(response.data);
             } catch (err) {
                 console.error('Error al obtener el detalle del producto:', err);
@@ -76,7 +76,7 @@ function DetalleProducto({ esAdmin, alActualizarConteoCarrito }) {
             return;
         }
         try {
-        const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/carrito`, {
+            const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/carrito`, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -91,7 +91,6 @@ function DetalleProducto({ esAdmin, alActualizarConteoCarrito }) {
             }
         }
     }, [alActualizarConteoCarrito]);
-
 
     const manejarAnadirAlCarrito = async () => {
         setMensaje('');
@@ -111,7 +110,7 @@ function DetalleProducto({ esAdmin, alActualizarConteoCarrito }) {
 
         try {
             await axios.post(
-            `${import.meta.env.VITE_BACKEND_URL}/api/carrito/items`,
+                `${import.meta.env.VITE_BACKEND_URL}/api/carrito/items`,
                 { productoId: producto._id, cantidad: 1 },
                 {
                     headers: {
@@ -129,32 +128,31 @@ function DetalleProducto({ esAdmin, alActualizarConteoCarrito }) {
         }
     };
 
-
     if (cargando) {
         return (
-            <Container className="my-5 text-center">
+            <Container className="loading-container">
                 <Spinner animation="border" role="status">
                     <span className="visually-hidden">Cargando detalle del producto...</span>
                 </Spinner>
-                <p className="mt-3">Cargando detalle del producto...</p>
+                <p className="loading-text">Cargando detalle del producto...</p>
             </Container>
         );
     }
 
     if (error) {
         return (
-            <Container className="my-5 text-center">
-                <Alert variant="danger">{error}</Alert>
-                <Button variant="primary" onClick={() => navegar('/')}>Volver a la Tienda</Button>
+            <Container className="error-container">
+                <Alert className="error-alert">{error}</Alert>
+                <Button className="primary-button" onClick={() => navegar('/')}>Volver a la Tienda</Button>
             </Container>
         );
     }
 
     if (!producto) { // Caso donde no hay producto (ej. 404 pero sin error explícito al inicio)
         return (
-            <Container className="my-5 text-center">
-                <Alert variant="info">Producto no encontrado.</Alert>
-                <Button variant="primary" onClick={() => navegar('/')}>Volver a la Tienda</Button>
+            <Container className="not-found-container">
+                <Alert className="info-alert">Producto no encontrado.</Alert>
+                <Button className="primary-button" onClick={() => navegar('/')}>Volver a la Tienda</Button>
             </Container>
         );
     }
@@ -163,9 +161,9 @@ function DetalleProducto({ esAdmin, alActualizarConteoCarrito }) {
     const descuentoAplicado = esDescuentoActivo(producto);
 
     return (
-        <Container className="my-5">
+        <Container className="product-detail-container">
             <Row>
-                <Col md={6} className="text-center">
+                <Col md={6} className="product-image-col">
                     {producto.imagen ? (
                         <Image src={producto.imagen} alt={producto.nombre} fluid thumbnail className="product-detail-image" />
                     ) : (
@@ -173,55 +171,55 @@ function DetalleProducto({ esAdmin, alActualizarConteoCarrito }) {
                     )}
                 </Col>
                 <Col md={6}>
-                    <Card className="p-4 shadow-sm">
+                    <Card className="product-detail-card">
                         <Card.Body>
-                            <Card.Title as="h2" className="mb-3">{producto.nombre}</Card.Title>
-                            <Card.Text>
-                                <strong className="d-block mb-2">Descripción:</strong> {producto.descripcion}
+                            <Card.Title as="h2" className="product-title">{producto.nombre}</Card.Title>
+                            <Card.Text className="product-description">
+                                <strong className="description-label">Descripción:</strong> {producto.descripcion}
                             </Card.Text>
 
-                            <Card.Text>
-                                <strong className="d-block mb-2">Stock:</strong> {producto.stock > 0 ? producto.stock : <span className="text-danger">Agotado</span>}
+                            <Card.Text className="product-stock">
+                                <strong className="stock-label">Stock:</strong> {producto.stock > 0 ? producto.stock : <span className="out-of-stock">Agotado</span>}
                             </Card.Text>
 
                             {descuentoAplicado ? (
-                                <Card.Text className="fs-4">
-                                    Precio: <span className="text-decoration-line-through text-muted me-2">${producto.precio.toFixed(2)}</span>
-                                    <span className="text-success fw-bold">${precioFinal.toFixed(2)}</span>
-                                    <span className="ms-2 badge bg-success">-{producto.porcentajeDescuento}%</span>
+                                <Card.Text className="price-container">
+                                    Precio: <span className="original-price">${producto.precio.toFixed(2)}</span>
+                                    <span className="discounted-price">${precioFinal.toFixed(2)}</span>
+                                    <span className="discount-badge">-{producto.porcentajeDescuento}%</span>
                                 </Card.Text>
                             ) : (
-                                <Card.Text className="fs-4">
-                                    Precio: <span className="fw-bold">${producto.precio.toFixed(2)}</span>
+                                <Card.Text className="price-container">
+                                    Precio: <span className="current-price">${producto.precio.toFixed(2)}</span>
                                 </Card.Text>
                             )}
 
                             {/* Mostrar información de descuento solo si es admin */}
                             {esAdmin && producto.porcentajeDescuento > 0 && (
-                                <div className="mt-3 p-3 bg-light border rounded">
-                                    <h5 className="mb-2">Información de Descuento (Admin):</h5>
+                                <div className="admin-discount-info">
+                                    <h5 className="discount-title">Información de Descuento (Admin):</h5>
                                     <p>Porcentaje de Descuento: {producto.porcentajeDescuento}%</p>
                                     <p>Inicio del Descuento: {producto.fechaInicioDescuento ? new Date(producto.fechaInicioDescuento).toLocaleDateString() : 'N/A'}</p>
                                     <p>Fin del Descuento: {producto.fechaFinDescuento ? new Date(producto.fechaFinDescuento).toLocaleDateString() : 'N/A'}</p>
-                                    <p className={descuentoAplicado ? "text-success fw-bold" : "text-warning fw-bold"}>
+                                    <p className={descuentoAplicado ? "discount-active" : "discount-inactive"}>
                                         Estado: {descuentoAplicado ? 'Activo' : 'No Activo / Fuera de Fechas'}
                                     </p>
                                 </div>
                             )}
                             
-                            {mensaje && <Alert variant="success" onClose={() => setMensaje('')} dismissible className="mt-3">{mensaje}</Alert>}
-                            {error && <Alert variant="danger" onClose={() => setError('')} dismissible className="mt-3">{error}</Alert>}
+                            {mensaje && <Alert className="success-message" onClose={() => setMensaje('')} dismissible>{mensaje}</Alert>}
+                            {error && <Alert className="error-message" onClose={() => setError('')} dismissible>{error}</Alert>}
 
-                            <div className="d-grid gap-2 mt-4">
+                            <div className="product-actions">
                                 <Button
-                                    variant="primary"
+                                    className="add-to-cart-button"
                                     onClick={manejarAnadirAlCarrito}
                                     disabled={producto.stock <= 0}
                                 >
                                     {producto.stock > 0 ? 'Añadir al Carrito' : 'Producto Agotado'}
                                 </Button>
                                 {esAdmin && (
-                                    <Button variant="outline-secondary" onClick={() => navegar(`/editar-producto/${producto._id}`)}>
+                                    <Button className="edit-product-button" onClick={() => navegar(`/editar-producto/${producto._id}`)}>
                                         Editar Producto
                                     </Button>
                                 )}
