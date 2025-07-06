@@ -35,7 +35,7 @@ const Cart = ({ onCartUpdate }) => {
                 return;
             }
 
-            const response = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/api/carrito`, {
+            const response = await axios.post(`${import.meta.env.VITE_BACKEND_URL}/api/carrito`, null, {
                 headers: {
                     Authorization: `Bearer ${token}`
                 }
@@ -93,7 +93,9 @@ const Cart = ({ onCartUpdate }) => {
         } catch (err) {
             console.error('Error al actualizar/eliminar producto:', err);
             setError(err.response?.data?.mensaje || 'Error al actualizar el carrito.');
-            setTimeout(() => setError(''), 5000);
+            if (err.response?.data?.mensaje.includes('stock')) {
+            fetchCart(); // Forzar recarga para mostrar stock actual
+    }
         }
     };
 

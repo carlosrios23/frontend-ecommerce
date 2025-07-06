@@ -964,3 +964,32 @@ body {
 .fas {
     margin-right: 0.5rem;
 }
+
+/* Efecto hover 3D */
+.product-card {
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.product-card:hover {
+  transform: perspective(1000px) rotateX(5deg) translateY(-10px);
+  box-shadow: 0 20px 40px rgba(33, 52, 72, 0.2);
+}
+
+/* Layout responsivo */
+@media (max-width: 768px) {
+  .products-grid {
+    justify-content: center !important;
+  }
+}
+
+/* Botones con efecto "neumorphic" */
+.add-to-cart-button {
+  transition: all 0.3s;
+  box-shadow: 5px 5px 10px #94b4c166,
+             -5px -5px 10px #ffffff;
+}
+
+.add-to-cart-button:active {
+  box-shadow: inset 3px 3px 5px #94b4c188,
+              inset -3px -3px 5px #ffffff;
+}
