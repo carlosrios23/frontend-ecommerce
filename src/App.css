@@ -1,5 +1,5 @@
 /* ========== VARIABLES GLOBALES ========== */
-/* App.css - Actualizado con paleta ColorHunt */
+
 :root {
   /* Paleta de colores */
   --color-primary: #213448;     /* Azul oscuro */
@@ -135,19 +135,125 @@ body {
 
 /* ========== ESTILOS DE ADDPRODUCTFORM ========== */
 .add-product-container {
-  max-width: 800px;
-  margin: 2rem auto;
-  padding: var(--spacing-large);
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background-color: #ecefca;
+    padding: 2rem;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 2rem auto;
 }
 
-.add-product-container h2 {
-  color: var(--color-dark-blue);
-  text-align: center;
-  margin-bottom: var(--spacing-large);
+.add-product-title {
+    color: #213448;
+    font-weight: 700;
+    margin-bottom: 2rem;
+    text-align: center;
 }
+
+.add-product-form .form-label {
+    color: #213448;
+    font-weight: 600;
+}
+
+.add-product-form .form-control {
+    border: 1px solid #547792;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+    color: #213448;
+}
+
+.add-product-form .form-control:focus {
+    border-color: #94b4c1;
+    box-shadow: 0 0 5px rgba(84, 119, 146, 0.5);
+}
+
+.add-product-form .form-actions {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+/* Botones */
+.add-product-form .btn-primary {
+    background-color: #547792;
+    border-color: #547792;
+}
+
+.add-product-form .btn-primary:hover {
+    background-color: #213448;
+    border-color: #213448;
+}
+
+.add-product-form .btn-secondary {
+    background-color: #94b4c1;
+    border-color: #94b4c1;
+    color: #213448;
+}
+
+.add-product-form .btn-secondary:hover {
+    background-color: #547792;
+    border-color: #547792;
+    color: white;
+}
+
+/* Alertas */
+.add-product-container .alert-success {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
+
+.add-product-container .alert-danger {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+}
+
+/* Spinner */
+.add-product-container .spinner-border {
+    color: white;
+}
+
+/* ---------- Responsive Design ---------- */
+
+@media (max-width: 768px) {
+    .add-product-container {
+        padding: 1.2rem;
+        margin: 1rem;
+        border-radius: 8px;
+    }
+
+    .add-product-form .form-actions {
+        flex-direction: column;
+        gap: 0.75rem;
+    }
+
+    .add-product-form .btn-primary,
+    .add-product-form .btn-secondary {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .add-product-title {
+        font-size: 1.4rem;
+    }
+
+    .add-product-container {
+        padding: 1rem;
+    }
+
+    .add-product-form .form-label {
+        font-size: 0.9rem;
+    }
+
+    .add-product-form .form-control {
+        font-size: 0.9rem;
+    }
+}
+
 
 /* ========== ESTILOS DEL CARRITO (CART) ========== */
 .cart-container {
