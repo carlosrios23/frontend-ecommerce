@@ -28,6 +28,14 @@ function Sidebar({ esAdmin, estaLogueado, alCerrarSesion, conteoItemsCarrito }) 
         setIsSidebarExpanded(false);
     }, []);
 
+    // NUEVA FUNCIÓN: Maneja el clic en el overlay
+    const handleOverlayClick = useCallback(() => {
+        if (window.innerWidth < 768) {
+            closeSidebar();
+        }
+    }, [closeSidebar]);
+
+
     // Efecto para aplicar/remover clases 'expander' y 'body-pd' basadas en el estado
     useEffect(() => {
         const navbar = navRef.current;
@@ -108,10 +116,10 @@ function Sidebar({ esAdmin, estaLogueado, alCerrarSesion, conteoItemsCarrito }) 
     return (
         <div id="body-pd" className={isSidebarExpanded ? 'body-pd' : ''}> {/* Aplica body-pd condicionalmente */}
             <header className="header" id="header">
-                <div className="header-toggle" id="nav-toggle" onClick={toggleSidebar}> {/* Usamos onClick del estado */}
+                <div className="header-toggle btn-animated" id="nav-toggle" onClick={toggleSidebar}> {/* Usamos onClick del estado */}
                     <i className='fas fa-bars'></i>
                 </div>
-                {/* Puedes añadir otros elementos del header aquí, como la imagen de perfil */}
+                {/* Se puede añadir otros elementos del header aquí, como la imagen de perfil */}
                 {/* <div className="header-img">
                     <img src="https://i.imgur.com/your-profile-image.jpg" alt="" />
                 </div> */}
@@ -123,25 +131,25 @@ function Sidebar({ esAdmin, estaLogueado, alCerrarSesion, conteoItemsCarrito }) 
                     <div>
                         {/* El icono de menú dentro de la navbar, que es interactivo en desktop para el hover o clic */}
                         {/* En mobile, este se oculta por CSS, y el del header es el que funciona */}
-                        <div className="nav-menu-icon" onClick={toggleSidebar}>
+                        <div className="nav-menu-icon btn-animated" onClick={toggleSidebar}>
                             <i className='fas fa-bars'></i>
                         </div>
 
                         <Link to="/" className="nav-brand" onClick={handleNavLinkClick}>
-                            <i className='fas fa-leaf nav-brand-icon'></i>
-                            <span className="nav-brand-name">Subastas enLinea</span>
+                            <i className='fas fa-leaf nav-brand-icon float-effect'></i>
+                            <span className="nav-brand-name">Mi tienda Online</span>
                         </Link>
 
                         <div className="nav-list">
-                            <Link to="/" className="nav-link" onClick={handleNavLinkClick}>
+                            <Link to="/" className="nav-link-animated" onClick={handleNavLinkClick}>
                                 <i className='fas fa-home nav-link-icon'></i>
                                 <span className="nav-link-name">Inicio</span>
                             </Link>
 
                             {/* Enlace al Carrito */}
-                            <Link to="/carrito" className="nav-link" onClick={handleNavLinkClick}>
-                                <i className='fas fa-shopping-cart nav-link-icon'></i>
-                                <span className="nav-link-name">Carrito {conteoItemsCarrito > 0 && `(${conteoItemsCarrito})`}</span>
+                            <Link to="/carrito" className="nav-link nav-link-animated" onClick={handleNavLinkClick}>
+                            <i className='fas fa-shopping-cart nav-link-icon'></i>
+                            <span className="nav-link-name">Carrito {conteoItemsCarrito > 0 && `(${conteoItemsCarrito})`}</span>
                             </Link>
 
                             {/* Mostrar Submenú de Administración solo si es administrador */}
@@ -167,25 +175,32 @@ function Sidebar({ esAdmin, estaLogueado, alCerrarSesion, conteoItemsCarrito }) 
                             {/* Enlaces de Autenticación/Cerrar Sesión */}
                             {!estaLogueado ? (
                                 <>
-                                    <Link to="/registro" className="nav-link" onClick={handleNavLinkClick}>
+                                    <Link to="/registro" className="nav-link nav-link-animated" onClick={handleNavLinkClick}>
                                         <i className='fas fa-user-plus nav-link-icon'></i>
                                         <span className="nav-link-name">Registro</span>
                                     </Link>
-                                    <Link to="/login" className="nav-link" onClick={handleNavLinkClick}>
+                                    <Link to="/login" className="nav-link nav-link-animated" onClick={handleNavLinkClick}>
                                         <i className='fas fa-sign-in-alt nav-link-icon'></i>
                                         <span className="nav-link-name">Iniciar Sesión</span>
                                     </Link>
                                 </>
                             ) : (
-                                <button onClick={manejarCerrarSesionYNavegar} className="nav-link logout-button-sidebar">
+                                <button onClick={manejarCerrarSesionYNavegar} className="nav-link nav-link-animated logout-button-sidebar">
                                     <i className='fas fa-sign-out-alt nav-link-icon'></i>
                                     <span className="nav-link-name">Cerrar Sesión</span>
                                 </button>
                             )}
+
                         </div>
                     </div>
                 </nav>
             </div>
+            {isSidebarExpanded && window.innerWidth < 768 && (
+            <div 
+                className="mobile-sidebar-overlay" 
+                onClick={handleOverlayClick}
+            />
+        )}
         </div>
     );
 }

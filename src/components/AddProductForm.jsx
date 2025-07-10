@@ -75,21 +75,22 @@ const AddProduct = () => {
         }
     };
 
-    return (
+   return (
         <Container className="add-product-container">
             <h2 className="add-product-title">Agregar Nuevo Producto</h2>
-            {mensaje && <Alert variant="success" onClose={() => setMensaje('')} dismissible>{mensaje}</Alert>}
-            {error && <Alert variant="danger" onClose={() => setError('')} dismissible>{error}</Alert>}
+            {mensaje && <Alert variant="success" onClose={() => setMensaje('')} dismissible className="animated-alert">{mensaje}</Alert>}
+            {error && <Alert variant="danger" onClose={() => setError('')} dismissible className="animated-alert">{error}</Alert>}
             
             <Form onSubmit={handleSubmit}>
                 {/* Sección de información básica */}
-                <Form.Group className="mb-3" controlId="formNombre">
+                <Form.Group className="mb-3 form-group-animated" controlId="formNombre">
                     <Form.Label>Nombre:</Form.Label>
                     <Form.Control 
                         type="text" 
                         value={nombre} 
                         onChange={(e) => setNombre(e.target.value)} 
                         required 
+                        className="form-control-animated"
                     />
                 </Form.Group>
 
@@ -101,6 +102,8 @@ const AddProduct = () => {
                         value={descripcion} 
                         onChange={(e) => setDescripcion(e.target.value)} 
                         required 
+                       className="form-control-animated"
+
                     />
                 </Form.Group>
 
@@ -113,6 +116,8 @@ const AddProduct = () => {
                         value={precio} 
                         onChange={(e) => setPrecio(e.target.value)} 
                         required 
+                        className="form-control-animated"
+                
                     />
                 </Form.Group>
 
@@ -124,6 +129,8 @@ const AddProduct = () => {
                         value={stock} 
                         onChange={(e) => setStock(e.target.value)} 
                         required 
+                         className="form-control-animated"
+                      
                     />
                 </Form.Group>
 
@@ -134,6 +141,8 @@ const AddProduct = () => {
                         value={categoria} 
                         onChange={(e) => setCategoria(e.target.value)} 
                         required 
+                        className="form-control-animated"
+                  
                     />
                 </Form.Group>
 
@@ -144,6 +153,8 @@ const AddProduct = () => {
                         type="file" 
                         onChange={(e) => setImagen(e.target.files[0])} 
                         accept="image/*"
+                       className="form-control-animated"
+
                     />
                 </Form.Group>
 
@@ -159,6 +170,8 @@ const AddProduct = () => {
                         max="100" 
                         value={porcentajeDescuento} 
                         onChange={(e) => setPorcentajeDescuento(e.target.value)} 
+                         className="form-control-animated"
+
                     />
                 </Form.Group>
 
@@ -168,6 +181,8 @@ const AddProduct = () => {
                         type="date" 
                         value={fechaInicioDescuento} 
                         onChange={(e) => setFechaInicioDescuento(e.target.value)} 
+                        className="form-control-animated"
+
                     />
                 </Form.Group>
 
@@ -177,6 +192,8 @@ const AddProduct = () => {
                         type="date" 
                         value={fechaFinDescuento} 
                         onChange={(e) => setFechaFinDescuento(e.target.value)} 
+                        className="form-control-animated"
+                  
                     />
                 </Form.Group>
 
@@ -186,7 +203,7 @@ const AddProduct = () => {
                         variant="primary" 
                         type="submit" 
                         disabled={enviando}
-                        className="me-2"
+                        className="btn-animated btn-pulse"
                     >
                         {enviando ? (
                             <>
@@ -199,6 +216,7 @@ const AddProduct = () => {
                         variant="secondary" 
                         onClick={() => navegar('/')} 
                         disabled={enviando}
+                        className='btn-animated'
                     >
                         Cancelar
                     </Button>
