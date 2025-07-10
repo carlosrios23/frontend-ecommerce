@@ -46,6 +46,26 @@ body.body-pd {
     padding-left: calc(var(--nav-expanded-width) + 1rem);
 }
 
+/* Estilo para el contenido principal cuando sidebar está abierta */
+body.sidebar-open::before {
+    content: '';
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: 97;
+    transition: all 0.3s ease;
+}
+
+@media (min-width: 768px) {
+    body.sidebar-open::before {
+        left: var(--nav-expanded-width);
+    }
+}
+
 /* HEADER */
 .header {
     width: 100%;
@@ -144,7 +164,7 @@ body.body-pd {
         pointer-events: none;
     }
     
-    /* Nuevo: Hover para desktop */
+    /* Hover para desktop */
     .l-navbar {
         left: 0;
         width: var(--nav-width);
@@ -219,8 +239,8 @@ body.body-pd {
     font-weight: 600;
     display: flex;
     align-items: center;
-    padding: 0.8rem 0; /* Ajuste de padding */
-    margin-bottom: 0.3rem; /* Reducción de separación */
+    padding: 0.8rem 0;
+    margin-bottom: 0.3rem;
     border-radius: .5rem;
     transition: .3s;
     cursor: pointer;
@@ -231,7 +251,7 @@ body.body-pd {
     font-size: 1.5rem;
     margin-right: 1rem;
     padding-left: 0.8rem;
-    min-width: calc(var(--nav-width) - 1rem); /* Asegura alineación */
+    min-width: calc(var(--nav-width) - 1rem);
 }
 
 .nav-link-name {
@@ -239,7 +259,7 @@ body.body-pd {
     transition: opacity .5s ease-in-out;
     white-space: nowrap;
     overflow: hidden;
-    padding-bottom: 0; /* Eliminamos el padding extra */
+    padding-bottom: 0;
 }
 
 .l-navbar.expander .nav-link-name,
@@ -270,13 +290,13 @@ body.body-pd {
     border: none;
     width: 100%;
     text-align: left;
-    padding: 0.8rem 0; /* Igual que nav-link */
+    padding: 0.8rem 0;
     cursor: pointer;
     color: var(--sub-color);
     font-weight: 600;
     display: flex;
     align-items: center;
-    margin-bottom: 0.3rem; /* Igual que nav-link */
+    margin-bottom: 0.3rem;
     border-radius: .5rem;
     transition: .3s;
 }
@@ -284,7 +304,7 @@ body.body-pd {
 /* Separación extra entre botones de abajo */
 .nav-list > .nav-link:nth-last-child(-n+2),
 .logout-button-sidebar {
-    margin-top: 1rem; /* Reducido para uniformidad */
+    margin-top: 1rem;
 }
 
 .logout-button-sidebar:hover {
@@ -298,8 +318,8 @@ body.body-pd {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 0.8rem 0; /* Igual que nav-link */
-    margin-bottom: 0.3rem; /* Igual que nav-link */
+    padding: 0.8rem 0;
+    margin-bottom: 0.3rem;
     border-radius: .5rem;
     transition: .3s;
     cursor: pointer;
@@ -330,7 +350,7 @@ body.body-pd {
 
 .collapse-menu.showCollapse {
     height: auto;
-    padding: 0.5rem 0; /* Reducido */
+    padding: 0.5rem 0;
     opacity: 1;
     pointer-events: auto;
 }

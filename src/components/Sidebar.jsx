@@ -32,8 +32,17 @@ function Sidebar({ esAdmin, estaLogueado, alCerrarSesion, conteoItemsCarrito }) 
     useEffect(() => {
         const esMobile = window.innerWidth < 768;
         document.body.style.overflow = (isSidebarExpanded && esMobile) ? 'hidden' : 'auto';
+        
+        // Agregar o remover la clase para el efecto blur
+        if (isSidebarExpanded) {
+            document.body.classList.add('sidebar-open');
+        } else {
+            document.body.classList.remove('sidebar-open');
+        }
+        
         return () => {
             document.body.style.overflow = 'auto';
+            document.body.classList.remove('sidebar-open');
         };
     }, [isSidebarExpanded]);
 
