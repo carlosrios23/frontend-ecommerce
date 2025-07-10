@@ -228,6 +228,7 @@ a {
 
 .nav-link-name {
     opacity: 0;
+    padding-bottom: 2rem;
     transition: opacity .5s ease-in-out;
     white-space: nowrap;
     overflow: hidden;

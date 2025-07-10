@@ -1,7 +1,7 @@
 // frontend-ecommerce/src/components/Sidebar.jsx
 
 import React, { useEffect, useRef, useState, useCallback } from 'react'; // Agregamos useState y useCallback
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'; // Usamos NavLink en lugar de Link para enlaces activos
 import PropTypes from 'prop-types';
 
 // Importa el CSS de la barra lateral
@@ -9,7 +9,6 @@ import '../assets/styles/Sidebar.css';
 
 function Sidebar({ esAdmin, estaLogueado, alCerrarSesion, conteoItemsCarrito }) {
     const navRef = useRef(null);
-    const bodyRef = useRef(document.body);
     const ubicacion = useLocation();
     const navegar = useNavigate();
 
@@ -35,26 +34,38 @@ function Sidebar({ esAdmin, estaLogueado, alCerrarSesion, conteoItemsCarrito }) 
         }
     }, [closeSidebar]);
 
+    // Bloquear el scroll del body en mobile cuando la sidebar esté abierta
+    useEffect(() => {
+        const esMobile = window.innerWidth < 768;
+
+        if (isSidebarExpanded && esMobile) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = 'auto';
+        }
+
+        return () => {
+            document.body.style.overflow = 'auto';
+        };
+    }, [isSidebarExpanded]);
 
     // Efecto para aplicar/remover clases 'expander' y 'body-pd' basadas en el estado
     useEffect(() => {
         const navbar = navRef.current;
-        const bodypadding = bodyRef.current;
 
-        if (navbar && bodypadding) {
+        if (navbar) {
             if (isSidebarExpanded) {
                 // Solo aplicar 'body-pd' en mobile para empujar el contenido
                 if (window.innerWidth < 768) {
                     navbar.classList.add('expander');
-                    bodypadding.classList.add('body-pd');
+                    document.body.classList.add('body-pd');
                 } else {
-                    // En desktop, si se fuerza la expansión (ej. clic en el icono)
                     navbar.classList.add('expander');
-                    bodypadding.classList.add('body-pd'); // También empuja en desktop
+                    document.body.classList.add('body-pd'); // También empuja en desktop
                 }
             } else {
                 navbar.classList.remove('expander');
-                bodypadding.classList.remove('body-pd');
+                document.body.classList.remove('body-pd');
             }
         }
     }, [isSidebarExpanded]); // Depende de isSidebarExpanded
@@ -80,20 +91,8 @@ function Sidebar({ esAdmin, estaLogueado, alCerrarSesion, conteoItemsCarrito }) 
         };
     }, [isSidebarExpanded, closeSidebar]);
 
-
     // Lógica para resaltar enlace activo y submenús
     useEffect(() => {
-        const enlacesColor = document.querySelectorAll('.nav-link');
-        const rutaActual = ubicacion.pathname;
-
-        enlacesColor.forEach(l => {
-            l.classList.remove('active');
-            // Si la ruta actual es la misma que el href del enlace, lo activa
-            if (l.getAttribute('href') === rutaActual) {
-                l.classList.add('active');
-            }
-        });
-
         // Toggle del submenú de administración
         // Se maneja con estado de React ahora
     }, [ubicacion.pathname]);
@@ -141,16 +140,16 @@ function Sidebar({ esAdmin, estaLogueado, alCerrarSesion, conteoItemsCarrito }) 
                         </Link>
 
                         <div className="nav-list">
-                            <Link to="/" className="nav-link-animated" onClick={handleNavLinkClick}>
+                            <NavLink to="/" className={({ isActive }) => `nav-link-animated ${isActive ? 'active' : ''}`} onClick={handleNavLinkClick}>
                                 <i className='fas fa-home nav-link-icon'></i>
                                 <span className="nav-link-name">Inicio</span>
-                            </Link>
+                            </NavLink>
 
                             {/* Enlace al Carrito */}
-                            <Link to="/carrito" className="nav-link nav-link-animated" onClick={handleNavLinkClick}>
-                            <i className='fas fa-shopping-cart nav-link-icon'></i>
-                            <span className="nav-link-name">Carrito {conteoItemsCarrito > 0 && `(${conteoItemsCarrito})`}</span>
-                            </Link>
+                            <NavLink to="/carrito" className={({ isActive }) => `nav-link nav-link-animated ${isActive ? 'active' : ''}`} onClick={handleNavLinkClick}>
+                                <i className='fas fa-shopping-cart nav-link-icon'></i>
+                                <span className="nav-link-name">Carrito {conteoItemsCarrito > 0 && `(${conteoItemsCarrito})`}</span>
+                            </NavLink>
 
                             {/* Mostrar Submenú de Administración solo si es administrador */}
                             {esAdmin && (
@@ -162,30 +161,29 @@ function Sidebar({ esAdmin, estaLogueado, alCerrarSesion, conteoItemsCarrito }) 
                             )}
                             {esAdmin && isSubmenuAdminOpen && (
                                 <div className="collapse-menu showCollapse"> {/* showCollapse se aplica aquí condicionalmente */}
-                                    <Link to="/agregar-producto" className="collapse-sub-link" onClick={handleNavLinkClick}>
+                                    <NavLink to="/agregar-producto" className="collapse-sub-link" onClick={handleNavLinkClick}>
                                         Agregar Producto
-                                    </Link>
-                                    {/* Puedes añadir más sub-enlaces de administración aquí */}
-                                    <Link to="/gestionar-productos" className="collapse-sub-link" onClick={handleNavLinkClick}>
+                                    </NavLink>
+                                    <NavLink to="/gestionar-productos" className="collapse-sub-link" onClick={handleNavLinkClick}>
                                         Gestionar Productos
-                                    </Link>
+                                    </NavLink>
                                 </div>
                             )}
 
                             {/* Enlaces de Autenticación/Cerrar Sesión */}
                             {!estaLogueado ? (
                                 <>
-                                    <Link to="/registro" className="nav-link nav-link-animated" onClick={handleNavLinkClick}>
+                                    <NavLink to="/registro" className={({ isActive }) => `nav-link nav-link-animated ${isActive ? 'active' : ''}`} onClick={handleNavLinkClick}>
                                         <i className='fas fa-user-plus nav-link-icon'></i>
                                         <span className="nav-link-name">Registro</span>
-                                    </Link>
-                                    <Link to="/login" className="nav-link nav-link-animated" onClick={handleNavLinkClick}>
+                                    </NavLink>
+                                    <NavLink to="/login" className={({ isActive }) => `nav-link nav-link-animated ${isActive ? 'active' : ''}`} onClick={handleNavLinkClick}>
                                         <i className='fas fa-sign-in-alt nav-link-icon'></i>
                                         <span className="nav-link-name">Iniciar Sesión</span>
-                                    </Link>
+                                    </NavLink>
                                 </>
                             ) : (
-                                <button onClick={manejarCerrarSesionYNavegar} className="nav-link nav-link-animated logout-button-sidebar">
+                                <button type="button" onClick={manejarCerrarSesionYNavegar} className="nav-link nav-link-animated logout-button-sidebar">
                                     <i className='fas fa-sign-out-alt nav-link-icon'></i>
                                     <span className="nav-link-name">Cerrar Sesión</span>
                                 </button>
@@ -196,11 +194,11 @@ function Sidebar({ esAdmin, estaLogueado, alCerrarSesion, conteoItemsCarrito }) 
                 </nav>
             </div>
             {isSidebarExpanded && window.innerWidth < 768 && (
-            <div 
-                className="mobile-sidebar-overlay" 
-                onClick={handleOverlayClick}
-            />
-        )}
+                <div 
+                    className="mobile-sidebar-overlay" 
+                    onClick={handleOverlayClick}
+                />
+            )}
         </div>
     );
 }
