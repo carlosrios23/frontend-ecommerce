@@ -1101,7 +1101,7 @@ body {
               inset -3px -3px 5px #ffffff;
 }
 
-/* ========== ESTILOS LISTADEPRODUCTOS ===========1 */
+/* ========== ESTILOS LISTAPRODUCTOS ===========1 */
 
 .lista-productos-container {
     padding-top: 6rem;  /* separa del header fijo */
@@ -1116,6 +1116,7 @@ body {
     text-align: center;
     margin-bottom: 2.5rem;
     font-size: 2rem;
+    text-align: center;
 }
 
 /* Responsive para pantallas pequeñas */
