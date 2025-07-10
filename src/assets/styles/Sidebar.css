@@ -4,52 +4,58 @@
 @import url('https://fonts.googleapis.com/css2?family=Turret+Road:wght@200;300;400;500;700;800&display=swap');
 
 :root {
-    --nav-width: 92px;
-    --nav-expanded-width: 250px;
-    --header-height: 3rem;
+    --nav-width: 92px; /* Ancho de la sidebar colapsada */
+    --nav-expanded-width: 250px; /* Ancho de la sidebar expandida */
+    --header-height: 3rem; /* Altura de la cabecera */
 
+    /* Colores principales */
     --first-color: #0C5DF4;
     --bg-color: #12192C;
     --sub-color: #B6CEFC;
     --white-color: #FFF;
 
+    /* Tamaños de fuente */
     --normal-font-size: 1rem;
     --small-font-size: 0.875rem;
 
+    /* Fuentes */
     --font-poppins: 'Poppins', sans-serif;
     --font-turret: 'Turret Road', cursive;
-    --z-fixed: 100;
-    --z-overlay: 99;
+
+    /* Z-index para capas */
+    --z-fixed: 100; /* Para elementos que deben estar siempre visibles (header, sidebar) */
+    --z-overlay: 99; /* Para el overlay, justo debajo de la sidebar */
+
+    /* Colores adicionales */
     --color-cream-pale: #ECEFCA;
     --color-dark-blue: #213448;
     --color-text-light: #fff;
     --color-medium-blue: #547792;
 }
 
+/* Reseteo básico y box-sizing */
 *,
 ::before,
 ::after {
     box-sizing: border-box;
 }
 
+/* Estilos generales del cuerpo */
 body {
-    margin: var(--header-height) 0 0 0;
-    padding: 0 1rem;
+    margin: var(--header-height) 0 0 0; /* Margen superior para dejar espacio a la cabecera */
+    padding: 0 1rem; /* Padding horizontal general */
     font-family: var(--font-poppins);
     font-size: var(--normal-font-size);
-    transition: .5s;
+    transition: .5s; /* Transición suave para cambios en el body (e.g., padding-left) */
     background-color: var(--color-cream-pale);
-    min-height: 100vh;
+    min-height: 100vh; /* Altura mínima para que el body ocupe toda la ventana */
 }
-
-/* Eliminamos body-pd ya que no queremos que el contenido se mueva */
-/* En su lugar usaremos el overlay para el efecto de desenfoque */
 
 /* HEADER */
 .header {
     width: 100%;
     height: var(--header-height);
-    position: fixed;
+    position: fixed; /* Fijo en la parte superior */
     top: 0;
     left: 0;
     display: flex;
@@ -58,7 +64,7 @@ body {
     padding: 1rem;
     background-color: var(--color-dark-blue);
     color: var(--color-text-light);
-    z-index: var(--z-fixed);
+    z-index: var(--z-fixed); /* Asegura que esté por encima de la mayoría de los elementos */
     transition: .5s;
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
@@ -69,6 +75,7 @@ body {
     cursor: pointer;
 }
 
+/* Estilos para la imagen del header (si existe) */
 .header-img {
     width: 35px;
     height: 35px;
@@ -82,25 +89,26 @@ body {
     width: 40px;
 }
 
-/* SIDEBAR */
+/* SIDEBAR (Barra lateral de navegación) */
 .l-navbar {
-    position: fixed;
+    position: fixed; /* Fija la barra lateral */
     top: 0;
-    left: -100%;
-    width: var(--nav-expanded-width);
-    height: 100vh;
+    left: -100%; /* Inicialmente fuera de la vista en móvil */
+    width: var(--nav-expanded-width); /* Ancho predeterminado para móvil */
+    height: 100vh; /* Ocupa toda la altura de la vista */
     background-color: var(--bg-color);
     padding: 1rem 1rem 0 0;
-    z-index: var(--z-fixed);
-    transition: left .5s ease-in-out;
-    overflow-y: auto;
+    z-index: var(--z-fixed); /* Asegura que esté por encima del overlay */
+    transition: left .5s ease-in-out; /* Transición para el movimiento de entrada/salida */
+    overflow-y: auto; /* Permite desplazamiento si el contenido es largo */
     display: flex;
     flex-direction: column;
     align-items: flex-start;
 }
 
+/* Clase para expandir la sidebar (visible en móvil, ancho completo en escritorio) */
 .l-navbar.expander {
-    left: 0;
+    left: 0; /* Mueve la sidebar a la vista */
 }
 
 .nav {
@@ -111,54 +119,123 @@ body {
     width: 100%;
 }
 
-/* Contenido principal - Efecto de desenfoque cuando sidebar está abierta */
+/* Overlay para el contenido principal cuando la sidebar está abierta */
 .main-content-overlay {
-    position: fixed;
-    top: var(--header-height);
+    position: fixed; /* Fijo para cubrir toda la ventana */
+    top: var(--header-height); /* Comienza debajo del header */
     left: 0;
     right: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(5px);
-    z-index: var(--z-overlay);
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
+    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente oscuro */
+    backdrop-filter: blur(5px); /* Efecto de desenfoque */
+    z-index: var(--z-overlay); /* Justo debajo de la sidebar */
+    opacity: 0; /* Inicialmente invisible */
+    pointer-events: none; /* No interactuable cuando está invisible */
+    transition: opacity 0.3s ease; /* Transición suave para la visibilidad */
 }
 
+/* Hace visible el overlay cuando la sidebar está expandida */
 .main-content-overlay.visible {
     opacity: 1;
-    pointer-events: auto;
+    pointer-events: auto; /* Permite interacción (e.g., clic para cerrar sidebar) */
 }
 
+/* Media queries para escritorio (ancho de ventana >= 768px) */
 @media (min-width: 768px) {
+    /* Ajusta el padding del body para compensar el ancho de la sidebar colapsada */
+    body {
+        padding-left: calc(var(--nav-width) + 1rem);
+    }
+    /* Ajusta el padding del header para que su contenido no se superponga con la sidebar */
+    .header {
+        padding-left: calc(var(--nav-width) + 2rem);
+    }
+    /* El botón de toggle de la cabecera se oculta en escritorio */
+    .header-toggle {
+        display: none;
+    }
+
+    /* El overlay en escritorio empieza a la derecha de la sidebar colapsada */
     .main-content-overlay {
         left: var(--nav-width);
     }
     
+    /* La sidebar en escritorio siempre está fija a la izquierda y con ancho colapsado */
     .l-navbar {
-        left: 0;
-        width: var(--nav-width);
-        padding: 1rem 0;
+        left: 0; /* Siempre visible a la izquierda */
+        width: var(--nav-width); /* Ancho colapsado por defecto */
+        padding: 1rem 0; /* Ajuste de padding */
     }
     
+    /* Cuando la sidebar se expande en escritorio (clase 'expander') */
     .l-navbar.expander {
-        width: var(--nav-expanded-width);
+        width: var(--nav-expanded-width); /* Se expande al ancho completo */
     }
     
+    /* Cuando el overlay está visible y la sidebar expandida en escritorio */
     .main-content-overlay.visible {
-        left: var(--nav-expanded-width);
+        left: var(--nav-expanded-width); /* El overlay comienza a la derecha de la sidebar expandida */
+    }
+
+    /* Comportamiento al hacer hover sobre la sidebar en escritorio */
+    .l-navbar:hover {
+        width: var(--nav-expanded-width); /* Se expande al pasar el ratón */
+    }
+    
+    /* Mostrar nombres de marca y enlaces al hacer hover */
+    .l-navbar:hover .nav-brand-name,
+    .l-navbar:hover .nav-link-name {
+        opacity: 1;
+    }
+    
+    /* Ocultar el icono de menú de la sidebar cuando se hace hover (porque ya está expandida) */
+    .l-navbar:hover .nav-menu-icon {
+        opacity: 0;
+        pointer-events: none;
+    }
+    
+    /* Restaurar el margen del logo al hacer hover */
+    .l-navbar:hover .nav-brand {
+        margin-top: 0;
     }
 }
 
-/* Resto de estilos de la sidebar (se mantienen igual) */
+/* Media queries para móvil (ancho de ventana < 768px) */
+@media (max-width: 767px) {
+    /* El padding del body se mantiene estándar en móvil */
+    body {
+        padding-left: 1rem;
+    }
+    /* El logo de la sidebar se centra y ajusta en móvil */
+    .nav-brand {
+        margin-top: 0;
+        padding-left: 0;
+        justify-content: center;
+    }
+    .nav-brand-icon {
+        margin-right: 0.5rem;
+    }
+    /* El botón de toggle de la cabecera es visible en móvil */
+    .header-toggle {
+        display: block;
+    }
+    /* Ocultar el ícono de menú dentro de la sidebar en móvil, ya que el toggle del header es el principal */
+    .nav-menu-icon {
+        display: none;
+    }
+}
+
+
+/* --- Estilos compartidos y de elementos específicos de la barra lateral --- */
+
+/* Estilos del icono de menú dentro de la sidebar (visible en escritorio) */
 .nav-menu-icon {
     color: var(--white-color);
     font-size: 1.5rem;
     cursor: pointer;
     margin-bottom: 2rem;
     padding-left: 0.8rem;
-    opacity: 0;
+    opacity: 0; /* Inicialmente oculto */
     transition: opacity .5s ease-in-out;
     display: flex;
     align-items: center;
@@ -167,41 +244,19 @@ body {
     width: var(--nav-width);
 }
 
+/* Cuando la sidebar está expandida, el icono de menú de la sidebar se oculta */
 @media (min-width: 768px) {
     .nav-menu-icon {
-        opacity: 1;
+        opacity: 1; /* Visible por defecto en escritorio */
         pointer-events: auto;
     }
     .l-navbar.expander .nav-menu-icon {
-        opacity: 0;
+        opacity: 0; /* Oculto cuando se expande */
         pointer-events: none;
-    }
-    
-    .l-navbar:hover {
-        width: var(--nav-expanded-width);
-    }
-    
-    .l-navbar:hover .nav-brand-name,
-    .l-navbar:hover .nav-link-name {
-        opacity: 1;
-    }
-    
-    .l-navbar:hover .nav-menu-icon {
-        opacity: 0;
-        pointer-events: none;
-    }
-    
-    .l-navbar:hover .nav-brand {
-        margin-top: 0;
     }
 }
 
-@media (max-width: 767px) {
-    .nav-menu-icon {
-        display: none;
-    }
-}
-
+/* Estilos para la marca/logo de la navegación */
 .nav-brand {
     font-family: var(--font-turret);
     font-size: 1.25rem;
@@ -210,10 +265,12 @@ body {
     align-items: center;
     margin-bottom: 2rem;
     padding-left: 0.8rem;
-    margin-top: -2.5rem;
+    margin-top: -2.5rem; /* Margen negativo para el efecto inicial en escritorio */
     transition: margin-top .5s ease-in-out;
+    text-decoration: none; /* Elimina el subrayado por defecto de los enlaces */
 }
 
+/* Cuando la sidebar está expandida, el margen superior del logo se resetea */
 .l-navbar.expander .nav-brand {
     margin-top: 0;
 }
@@ -224,23 +281,25 @@ body {
 }
 
 .nav-brand-name {
-    opacity: 0;
+    opacity: 0; /* Nombre de marca oculto por defecto */
     transition: opacity .5s ease-in-out;
     white-space: nowrap;
     overflow: hidden;
 }
 
-.l-navbar.expander .nav-brand-name,
-.l-navbar:hover .nav-brand-name {
+/* Mostrar el nombre de marca cuando la sidebar está expandida o al hacer hover */
+.l-navbar.expander .nav-brand-name {
     opacity: 1;
 }
 
+/* Lista de navegación */
 .nav-list {
     display: flex;
     flex-direction: column;
     width: 100%;
 }
 
+/* Enlaces de navegación */
 .nav-link {
     color: var(--sub-color);
     font-weight: 600;
@@ -252,33 +311,36 @@ body {
     transition: .3s;
     cursor: pointer;
     width: 100%;
+    text-decoration: none; /* Elimina el subrayado por defecto */
 }
 
 .nav-link-icon {
     font-size: 1.5rem;
     margin-right: 1rem;
     padding-left: 0.8rem;
-    min-width: calc(var(--nav-width) - 1rem);
+    min-width: calc(var(--nav-width) - 1rem); /* Asegura un ancho mínimo para los iconos */
 }
 
 .nav-link-name {
-    opacity: 0;
+    opacity: 0; /* Nombre del enlace oculto por defecto */
     transition: opacity .5s ease-in-out;
     white-space: nowrap;
     overflow: hidden;
     padding-bottom: 0;
 }
 
-.l-navbar.expander .nav-link-name,
-.l-navbar:hover .nav-link-name {
+/* Mostrar el nombre del enlace cuando la sidebar está expandida o al hacer hover */
+.l-navbar.expander .nav-link-name {
     opacity: 1;
 }
 
+/* Efecto hover para los enlaces de navegación */
 .nav-link:hover {
     color: var(--white-color);
     background-color: var(--first-color);
 }
 
+/* Estilos para el enlace activo */
 .nav-link.active .nav-link-name {
     font-weight: 700;
 }
@@ -291,6 +353,7 @@ body {
     background-color: var(--first-color);
 }
 
+/* Botón de cerrar sesión */
 .logout-button-sidebar {
     background: none;
     border: none;
@@ -307,6 +370,7 @@ body {
     transition: .3s;
 }
 
+/* Margen superior para los últimos dos enlaces y el botón de cerrar sesión */
 .nav-list > .nav-link:nth-last-child(-n+2),
 .logout-button-sidebar {
     margin-top: 1rem;
@@ -317,6 +381,7 @@ body {
     background-color: var(--first-color);
 }
 
+/* Estilos para el elemento colapsable (e.g., Administración) */
 .collapse {
     display: flex;
     align-items: center;
@@ -342,72 +407,77 @@ body {
     margin-right: 0.8rem;
 }
 
+/* Menú colapsable (submenú) */
 .collapse-menu {
-    height: 0;
+    height: 0; /* Inicialmente oculto */
     overflow: hidden;
     padding: 0;
     width: 100%;
-    opacity: 0;
-    pointer-events: none;
+    opacity: 0; /* Inicialmente invisible */
+    pointer-events: none; /* No interactuable cuando está oculto */
     transition: height .5s ease-in-out, padding .5s ease-in-out, opacity .5s ease-in-out;
 }
 
+/* Muestra el menú colapsable */
 .collapse-menu.showCollapse {
-    height: auto;
+    height: auto; /* Permite que el contenido determine la altura */
     padding: 0.5rem 0;
     opacity: 1;
     pointer-events: auto;
 }
 
+/* Cuando la sidebar NO está expandida, los submenús se ocultan inmediatamente sin transición */
 .l-navbar:not(.expander) .collapse-menu {
     height: 0;
     padding: 0;
     opacity: 0;
     pointer-events: none;
-    transition: none;
+    transition: none; /* Deshabilita la transición para un cierre instantáneo */
 }
 
+/* Enlaces dentro del submenú colapsable */
 .collapse-sub-link {
     color: var(--sub-color);
     font-size: var(--small-font-size);
     padding: 0.5rem 2.25rem;
     display: block;
+    text-decoration: none; /* Elimina el subrayado */
 }
 
 .collapse-sub-link:hover {
     color: var(--white-color);
 }
 
+/* Estilo para rotar el icono de flecha del colapsable */
 .rotate {
     transform: rotate(180deg);
     transition: .5s;
 }
 
-@media (min-width: 768px) {
-    body {
-        padding-left: calc(var(--nav-width) + 1rem);
-    }
-    .header {
-        padding-left: calc(var(--nav-width) + 2rem);
-    }
-    .header-toggle {
-        display: none;
-    }
+/* Animación de "flotación" para los iconos */
+.float-effect {
+    animation: float 3s ease-in-out infinite;
 }
 
-@media (max-width: 767px) {
-    body {
-        padding-left: 1rem;
-    }
-    .nav-brand {
-        margin-top: 0;
-        padding-left: 0;
-        justify-content: center;
-    }
-    .nav-brand-icon {
-        margin-right: 0.5rem;
-    }
-    .header-toggle {
-        display: block;
-    }
+@keyframes float {
+    0% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+    100% { transform: translateY(0); }
+}
+
+/* Animación de "botón" para elementos clickeables */
+.btn-animated {
+    position: relative;
+    overflow: hidden;
+    transform: translateZ(0); /* Fuerza la aceleración de hardware */
+}
+
+.btn-animated:hover {
+    transform: scale(1.05); /* Ligeramente más grande al hacer hover */
+    transition: transform 0.2s ease-out;
+}
+
+.btn-animated:active {
+    transform: scale(0.95); /* Ligeramente más pequeño al hacer clic */
+    transition: transform 0.1s ease-in;
 }
