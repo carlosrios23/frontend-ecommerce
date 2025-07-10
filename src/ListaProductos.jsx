@@ -155,8 +155,8 @@ function ListaProductos({ alActualizarConteoCarrito, esAdmin }) {
 
     return (
         <Container className="lista-productos-container">
-            <div className='lista-productos-titulo'>
-            <h2 className="lista-productos-container">Nuestros Productos</h2>
+            <div className='lista-productos-titulo-box'>
+            <h2 className="lista-productos-titulo">Nuestros Productos</h2>
             </div>
             {mensaje && <Alert variant="success" onClose={() => setMensaje('')} dismissible>{mensaje}</Alert>}
             {error && <Alert variant="danger" onClose={() => setError(null)} dismissible>{error}</Alert>}
