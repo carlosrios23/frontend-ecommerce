@@ -155,11 +155,12 @@ function ListaProductos({ alActualizarConteoCarrito, esAdmin }) {
 
     return (
         <Container className="lista-productos-container">
+            <div className='-lista-productos-titulo'>
             <h2 className="lista-productos-container">Nuestros Productos</h2>
-
+            </div>
             {mensaje && <Alert variant="success" onClose={() => setMensaje('')} dismissible>{mensaje}</Alert>}
             {error && <Alert variant="danger" onClose={() => setError(null)} dismissible>{error}</Alert>}
-
+            
             {/* Integra la barra de búsqueda aquí */}
             <SearchBar onSearch={handleSearch} />
 
@@ -178,8 +179,8 @@ function ListaProductos({ alActualizarConteoCarrito, esAdmin }) {
                 </div>
             ) : (
                 productosFiltrados.length === 0 ? (
-                    <div className="text-center mt-5">
-                        <h3>No se encontraron productos{searchTerm ? ` para "${searchTerm}"` : ''}.</h3>
+                    <div className="mensaje-productos-vacio">
+                        <h3 className='mensaje-productos-vacio'>No se encontraron productos{searchTerm ? ` para "${searchTerm}"` : ''}.</h3>
                         {searchTerm && (
                             <Button variant="outline-primary" onClick={() => handleSearch('')}>
                                 Mostrar todos los productos
