@@ -19,6 +19,7 @@
     --font-poppins: 'Poppins', sans-serif;
     --font-turret: 'Turret Road', cursive;
     --z-fixed: 100;
+    --z-overlay: 99;
     --color-cream-pale: #ECEFCA;
     --color-dark-blue: #213448;
     --color-text-light: #fff;
@@ -41,30 +42,8 @@ body {
     min-height: 100vh;
 }
 
-/* Empujar contenido cuando sidebar expandida */
-body.body-pd {
-    padding-left: calc(var(--nav-expanded-width) + 1rem);
-}
-
-/* Estilo para el contenido principal cuando sidebar está abierta */
-body.sidebar-open::before {
-    content: '';
-    position: fixed;
-    top: var(--header-height);
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(5px);
-    z-index: 97;
-    transition: all 0.3s ease;
-}
-
-@media (min-width: 768px) {
-    body.sidebar-open::before {
-        left: var(--nav-expanded-width);
-    }
-}
+/* Eliminamos body-pd ya que no queremos que el contenido se mueva */
+/* En su lugar usaremos el overlay para el efecto de desenfoque */
 
 /* HEADER */
 .header {
@@ -84,18 +63,13 @@ body.sidebar-open::before {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* Padding del header cuando sidebar expandida */
-.header.header-pd {
-    padding-left: calc(var(--nav-expanded-width) + 2rem);
-}
-
 .header-toggle {
     color: var(--white-color);
     font-size: 1.5rem;
     cursor: pointer;
 }
 
-.header-img { /* comentado por ahora */
+.header-img {
     width: 35px;
     height: 35px;
     display: flex;
@@ -118,9 +92,8 @@ body.sidebar-open::before {
     background-color: var(--bg-color);
     padding: 1rem 1rem 0 0;
     z-index: var(--z-fixed);
-    transition: width .5s ease-in-out, left .5s ease-in-out;
+    transition: left .5s ease-in-out;
     overflow-y: auto;
-
     display: flex;
     flex-direction: column;
     align-items: flex-start;
@@ -128,7 +101,6 @@ body.sidebar-open::before {
 
 .l-navbar.expander {
     left: 0;
-    width: var(--nav-expanded-width);
 }
 
 .nav {
@@ -139,6 +111,47 @@ body.sidebar-open::before {
     width: 100%;
 }
 
+/* Contenido principal - Efecto de desenfoque cuando sidebar está abierta */
+.main-content-overlay {
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(5px);
+    z-index: var(--z-overlay);
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.main-content-overlay.visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+@media (min-width: 768px) {
+    .main-content-overlay {
+        left: var(--nav-width);
+    }
+    
+    .l-navbar {
+        left: 0;
+        width: var(--nav-width);
+        padding: 1rem 0;
+    }
+    
+    .l-navbar.expander {
+        width: var(--nav-expanded-width);
+    }
+    
+    .main-content-overlay.visible {
+        left: var(--nav-expanded-width);
+    }
+}
+
+/* Resto de estilos de la sidebar (se mantienen igual) */
 .nav-menu-icon {
     color: var(--white-color);
     font-size: 1.5rem;
@@ -164,13 +177,6 @@ body.sidebar-open::before {
         pointer-events: none;
     }
     
-    /* Hover para desktop */
-    .l-navbar {
-        left: 0;
-        width: var(--nav-width);
-        padding: 1rem 0;
-    }
-    
     .l-navbar:hover {
         width: var(--nav-expanded-width);
     }
@@ -189,6 +195,7 @@ body.sidebar-open::before {
         margin-top: 0;
     }
 }
+
 @media (max-width: 767px) {
     .nav-menu-icon {
         display: none;
@@ -272,7 +279,6 @@ body.sidebar-open::before {
     background-color: var(--first-color);
 }
 
-/* Más grosor al texto del botón activo (Inicio) */
 .nav-link.active .nav-link-name {
     font-weight: 700;
 }
@@ -301,7 +307,6 @@ body.sidebar-open::before {
     transition: .3s;
 }
 
-/* Separación extra entre botones de abajo */
 .nav-list > .nav-link:nth-last-child(-n+2),
 .logout-button-sidebar {
     margin-top: 1rem;
@@ -312,7 +317,6 @@ body.sidebar-open::before {
     background-color: var(--first-color);
 }
 
-/* Submenús */
 .collapse {
     display: flex;
     align-items: center;
@@ -379,52 +383,9 @@ body.sidebar-open::before {
     transition: .5s;
 }
 
-/* Overlays */
-/* Mobile */
-.mobile-sidebar-overlay {
-    position: fixed;
-    top: var(--header-height);
-    left: 0;
-    width: 100vw;
-    height: calc(100vh - var(--header-height));
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(3px);
-    z-index: 98;
-    cursor: pointer;
-}
-/* Desktop */
-.desktop-sidebar-overlay {
-    position: fixed;
-    top: var(--header-height);
-    left: var(--nav-expanded-width);
-    width: calc(100vw - var(--nav-expanded-width));
-    height: calc(100vh - var(--header-height));
-    background-color: rgba(0, 0, 0, 0.15);
-    backdrop-filter: blur(2px);
-    z-index: 98;
-    cursor: pointer;
-}
-
-@media (max-width: 767px) {
-    .desktop-sidebar-overlay {
-        display: none;
-    }
-}
-@media (min-width: 768px) {
-    .mobile-sidebar-overlay {
-        display: none;
-    }
-}
-
-/* Responsividad Básica */
 @media (min-width: 768px) {
     body {
         padding-left: calc(var(--nav-width) + 1rem);
-    }
-    .l-navbar {
-        left: 0;
-        width: var(--nav-width);
-        padding: 1rem 0;
     }
     .header {
         padding-left: calc(var(--nav-width) + 2rem);
@@ -432,36 +393,11 @@ body.sidebar-open::before {
     .header-toggle {
         display: none;
     }
-    .l-navbar.expander {
-        width: var(--nav-expanded-width);
-    }
-    .l-navbar.expander .nav-menu-icon {
-        opacity: 0; pointer-events: none;
-    }
-    .l-navbar.expander .nav-brand-name,
-    .l-navbar.expander .nav-link-name {
-        opacity: 1;
-    }
 }
 
 @media (max-width: 767px) {
     body {
         padding-left: 1rem;
-    }
-    .l-navbar {
-        left: -100%;
-        width: var(--nav-expanded-width);
-        padding: 1rem;
-    }
-    .l-navbar.expander {
-        left: 0;
-    }
-    .nav-menu-icon {
-        display: none;
-    }
-    .l-navbar.expander .nav-brand-name,
-    .l-navbar.expander .nav-link-name {
-        opacity: 1;
     }
     .nav-brand {
         margin-top: 0;
@@ -471,7 +407,6 @@ body.sidebar-open::before {
     .nav-brand-icon {
         margin-right: 0.5rem;
     }
-
     .header-toggle {
         display: block;
     }

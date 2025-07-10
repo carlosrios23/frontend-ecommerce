@@ -14,8 +14,6 @@ function Sidebar({ esAdmin, estaLogueado, alCerrarSesion, conteoItemsCarrito }) 
 
     const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
     const [isSubmenuAdminOpen, setIsSubmenuAdminOpen] = useState(false);
-    const [showOverlayMobile, setShowOverlayMobile] = useState(false);
-    const [showOverlayDesktop, setShowOverlayDesktop] = useState(false);
 
     const toggleSidebar = useCallback(() => {
         setIsSidebarExpanded(prev => !prev);
@@ -25,37 +23,13 @@ function Sidebar({ esAdmin, estaLogueado, alCerrarSesion, conteoItemsCarrito }) 
         setIsSidebarExpanded(false);
     }, []);
 
-    const handleOverlayClick = useCallback(() => {
-        closeSidebar();
-    }, [closeSidebar]);
-
     useEffect(() => {
         const esMobile = window.innerWidth < 768;
         document.body.style.overflow = (isSidebarExpanded && esMobile) ? 'hidden' : 'auto';
         
-        // Agregar o remover la clase para el efecto blur
-        if (isSidebarExpanded) {
-            document.body.classList.add('sidebar-open');
-        } else {
-            document.body.classList.remove('sidebar-open');
-        }
-        
         return () => {
             document.body.style.overflow = 'auto';
-            document.body.classList.remove('sidebar-open');
         };
-    }, [isSidebarExpanded]);
-
-    useEffect(() => {
-        const actualizarOverlay = () => {
-            const esMobile = window.innerWidth < 768;
-            setShowOverlayMobile(isSidebarExpanded && esMobile);
-            setShowOverlayDesktop(isSidebarExpanded && !esMobile);
-        };
-
-        actualizarOverlay();
-        window.addEventListener('resize', actualizarOverlay);
-        return () => window.removeEventListener('resize', actualizarOverlay);
     }, [isSidebarExpanded]);
 
     useEffect(() => {
@@ -65,10 +39,8 @@ function Sidebar({ esAdmin, estaLogueado, alCerrarSesion, conteoItemsCarrito }) 
         if (navbar && esMobile) {
             if (isSidebarExpanded) {
                 navbar.classList.add('expander');
-                document.body.classList.add('body-pd');
             } else {
                 navbar.classList.remove('expander');
-                document.body.classList.remove('body-pd');
             }
         }
     }, [isSidebarExpanded]);
@@ -109,7 +81,7 @@ function Sidebar({ esAdmin, estaLogueado, alCerrarSesion, conteoItemsCarrito }) 
     };
 
     return (
-        <div id="body-pd" className={isSidebarExpanded ? 'body-pd' : ''}>
+        <>
             <header className="header" id="header">
                 <div className="header-toggle btn-animated" id="nav-toggle" onClick={toggleSidebar}>
                     <i className='fas fa-bars'></i>
@@ -188,13 +160,9 @@ function Sidebar({ esAdmin, estaLogueado, alCerrarSesion, conteoItemsCarrito }) 
                 </nav>
             </div>
 
-            {showOverlayMobile && (
-                <div className="mobile-sidebar-overlay" onClick={handleOverlayClick} />
-            )}
-            {showOverlayDesktop && (
-                <div className="desktop-sidebar-overlay" onClick={handleOverlayClick} />
-            )}
-        </div>
+            {/* Overlay para el efecto de desenfoque */}
+            <div className={`main-content-overlay ${isSidebarExpanded ? 'visible' : ''}`} onClick={closeSidebar} />
+        </>
     );
 }
 
