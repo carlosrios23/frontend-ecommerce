@@ -194,7 +194,7 @@ body.body-pd {
     display: flex;
     align-items: center;
     padding: 1rem 0;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem; /* 🔽 Reducción de separación entre botones */
     border-radius: .5rem;
     transition: .3s;
     cursor: pointer;
@@ -204,6 +204,7 @@ body.body-pd {
     font-size: 1.5rem;
     margin-right: 1rem;
     padding-left: 0.8rem;
+
 }
 
 .nav-link-name {
@@ -227,7 +228,10 @@ body.body-pd {
 .nav-link.active .nav-link-name {
     font-weight: 700;
 }
-
+.nav-link.active-inicio .nav-link-name {
+    font-weight: 800;
+    font-size: 1.05rem;
+}
 .nav-link.active {
     color: var(--white-color);
     background-color: var(--first-color);
