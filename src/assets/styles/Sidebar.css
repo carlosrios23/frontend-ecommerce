@@ -4,23 +4,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Turret+Road:wght@200;300;400;500;700;800&display=swap');
 
 :root {
-    --nav-width: 92px; /* Ancho de la barra lateral colapsada */
-    --nav-expanded-width: 250px; /* Ancho de la barra lateral expandida (ajusta este valor) */
-    --header-height: 3rem; /* Altura estándar del header */
+    --nav-width: 92px;
+    --nav-expanded-width: 250px;
+    --header-height: 3rem;
 
-    --first-color: #0C5DF4; /* Azul brillante para elementos interactivos */
-    --bg-color: #12192C; /* Color de fondo de la barra lateral (azul oscuro) */
-    --sub-color: #B6CEFC; /* Color secundario, para texto normal en la barra lateral */
-    --white-color: #FFF; /* Blanco para texto resaltado */
+    --first-color: #0C5DF4;
+    --bg-color: #12192C;
+    --sub-color: #B6CEFC;
+    --white-color: #FFF;
 
     --normal-font-size: 1rem;
     --small-font-size: 0.875rem;
 
     --font-poppins: 'Poppins', sans-serif;
-    --font-turret: 'Turret Road', cursive; /* Fuente para el logo */
-    --z-fixed: 100; /* Z-index para elementos fijos */
-
-    /* Variables de fallback que mencionaste en CSS pero no definiste en :root */
+    --font-turret: 'Turret Road', cursive;
+    --z-fixed: 100;
     --color-cream-pale: #ECEFCA;
     --color-dark-blue: #213448;
     --color-text-light: #fff;
@@ -34,26 +32,21 @@
 }
 
 body {
-    margin: var(--header-height) 0 0 0; /* Margen superior para el header fijo */
-    padding: 0 1rem; /* Padding a los lados del body */
+    margin: var(--header-height) 0 0 0;
+    padding: 0 1rem;
     font-family: var(--font-poppins);
     font-size: var(--normal-font-size);
-    transition: .5s; /* Transición para el padding del body */
-    background-color: var(--color-cream-pale); /* Usa la variable de App.css si está disponible, o un fallback */
-    min-height: 100vh; /* Asegura que el body ocupe al menos toda la altura de la ventana */
+    transition: .5s;
+    background-color: var(--color-cream-pale);
+    min-height: 100vh;
 }
 
-/* Clase para empujar el contenido del body cuando la sidebar está expandida */
+/* Empujar contenido cuando sidebar expandida */
 body.body-pd {
-    /* Este padding debe aplicarse a ambos, mobile y desktop, cuando la sidebar está expandida */
     padding-left: calc(var(--nav-expanded-width) + 1rem);
 }
 
-a {
-    text-decoration: none;
-}
-
-/* --- HEADER --- */
+/* HEADER */
 .header {
     width: 100%;
     height: var(--header-height);
@@ -63,7 +56,7 @@ a {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem 1rem;
+    padding: 1rem;
     background-color: var(--color-dark-blue);
     color: var(--color-text-light);
     z-index: var(--z-fixed);
@@ -71,55 +64,51 @@ a {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
-/* En el header, también necesitamos moverlo cuando la sidebar se expande */
-.header.header-pd { /* Nueva clase para el header */
-    padding-left: calc(var(--nav-expanded-width) + 2rem); /* Ajusta según tu diseño */
+/* Padding del header cuando sidebar expandida */
+.header.header-pd {
+    padding-left: calc(var(--nav-expanded-width) + 2rem);
 }
-
 
 .header-toggle {
-    color: var(--white-color); /* Color del icono de hamburguesa del header */
+    color: var(--white-color);
     font-size: 1.5rem;
     cursor: pointer;
-    display: block; /* Visible por defecto */
 }
 
-.header-img {
+.header-img { /* comentado por ahora */
     width: 35px;
     height: 35px;
     display: flex;
     justify-content: center;
     border-radius: 50%;
-    overflow: hidden;
-    background-color: var(--color-medium-blue); /* Fondo para la imagen de perfil si no hay imagen */
+    background-color: var(--color-medium-blue);
 }
 
 .header-img img {
     width: 40px;
 }
 
-/* --- BARRA LATERAL (l-navbar) --- */
+/* SIDEBAR */
 .l-navbar {
     position: fixed;
     top: 0;
-    left: -100%; /* Oculta la navbar fuera de la pantalla por defecto en mobile */
-    width: var(--nav-expanded-width); /* En mobile, la sidebar siempre se abre a su ancho expandido */
+    left: -100%;
+    width: var(--nav-expanded-width);
     height: 100vh;
     background-color: var(--bg-color);
     padding: 1rem 1rem 0 0;
     z-index: var(--z-fixed);
-    transition: width .5s ease-in-out, left .5s ease-in-out; /* Transición para ancho y posición */
-    overflow-y: auto; /* Para scroll si hay muchos elementos */
+    transition: width .5s ease-in-out, left .5s ease-in-out;
+    overflow-y: auto;
 
-    display: flex; /* Para organizar los elementos internos verticalmente */
+    display: flex;
     flex-direction: column;
-    align-items: flex-start; /* Alinea los elementos a la izquierda */
+    align-items: flex-start;
 }
 
-/* Clase para expandir la barra lateral (aplicada por JS) */
 .l-navbar.expander {
-    left: 0; /* Hace visible la navbar al activarse */
-    width: var(--nav-expanded-width); /* Asegura que se expanda a este ancho */
+    left: 0;
+    width: var(--nav-expanded-width);
 }
 
 .nav {
@@ -127,38 +116,35 @@ a {
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
-    width: 100%; /* Asegura que el nav ocupe todo el ancho de l-navbar */
+    width: 100%;
 }
 
-/* El icono de hamburguesa dentro de la navbar (el que quieres ver en desktop colapsado) */
 .nav-menu-icon {
     color: var(--white-color);
     font-size: 1.5rem;
     cursor: pointer;
     margin-bottom: 2rem;
     padding-left: 0.8rem;
-    opacity: 0; /* Oculto por defecto */
+    opacity: 0;
     transition: opacity .5s ease-in-out;
     display: flex;
     align-items: center;
     justify-content: center;
-    height: var(--nav-width); /* Asegura que tenga altura para ser visible */
-    width: var(--nav-width); /* Asegura que tenga ancho para ser visible */
+    height: var(--nav-width);
+    width: var(--nav-width);
 }
 
-/* Mostrar el icono de menú cuando la navbar está colapsada en desktop (solo si es Desktop) */
-@media screen and (min-width: 768px) {
+@media (min-width: 768px) {
     .nav-menu-icon {
-        opacity: 1; /* Visible en desktop cuando la sidebar está colapsada */
-        pointer-events: auto; /* Habilitar interacción */
+        opacity: 1;
+        pointer-events: auto;
     }
     .l-navbar.expander .nav-menu-icon {
-        opacity: 0; /* Oculto cuando la sidebar está expandida en desktop */
+        opacity: 0;
         pointer-events: none;
     }
 }
-/* Ocultar el icono de menú dentro de la navbar en mobile (ya que se usa el del header) */
-@media screen and (max-width: 767px) {
+@media (max-width: 767px) {
     .nav-menu-icon {
         display: none;
     }
@@ -172,14 +158,13 @@ a {
     align-items: center;
     margin-bottom: 2rem;
     padding-left: 0.8rem;
-    margin-top: -2.5rem; /* Ajuste para mover el brand hacia arriba */
+    margin-top: -2.5rem;
     transition: margin-top .5s ease-in-out;
 }
 
 .l-navbar.expander .nav-brand {
-    margin-top: 0; /* Cuando se expande, el margen vuelve a 0 */
+    margin-top: 0;
 }
-
 
 .nav-brand-icon {
     font-size: 1.5rem;
@@ -215,11 +200,6 @@ a {
     cursor: pointer;
 }
 
-.nav-link:hover {
-    color: var(--white-color);
-    background-color: var(--first-color);
-}
-
 .nav-link-icon {
     font-size: 1.5rem;
     margin-right: 1rem;
@@ -238,6 +218,16 @@ a {
     opacity: 1;
 }
 
+.nav-link:hover {
+    color: var(--white-color);
+    background-color: var(--first-color);
+}
+
+/* Más grosor al texto del botón activo (Inicio) */
+.nav-link.active .nav-link-name {
+    font-weight: 700;
+}
+
 .nav-link.active {
     color: var(--white-color);
     background-color: var(--first-color);
@@ -248,16 +238,21 @@ a {
     border: none;
     width: 100%;
     text-align: left;
-    padding: 0;
+    padding: 1rem 0;
     cursor: pointer;
     color: var(--sub-color);
     font-weight: 600;
     display: flex;
     align-items: center;
-    padding: 1rem 0;
     margin-bottom: 1rem;
     border-radius: .5rem;
     transition: .3s;
+}
+
+/* Separación extra entre botones de abajo */
+.nav-list > .nav-link:nth-last-child(-n+2),
+.logout-button-sidebar {
+    margin-top: 1.5rem;
 }
 
 .logout-button-sidebar:hover {
@@ -265,8 +260,7 @@ a {
     background-color: var(--first-color);
 }
 
-/* Estilos para submenús */
-/* Modificación: El 'collapse' ahora es el contenedor que activará el submenú */
+/* Submenús */
 .collapse {
     display: flex;
     align-items: center;
@@ -285,11 +279,9 @@ a {
     color: var(--white-color);
 }
 
-/* Este es el icono de chevron */
-.collapse-link.collapse-icon { /* Usamos ambas clases para mayor especificidad */
+.collapse-link.collapse-icon {
     font-size: 1.25rem;
     transition: transform .5s;
-    color: inherit;
     margin-left: auto;
     margin-right: 0.8rem;
 }
@@ -297,31 +289,27 @@ a {
 .collapse-menu {
     height: 0;
     overflow: hidden;
-    transition: height .5s ease-in-out, padding .5s ease-in-out; /* También transiciona el padding */
     padding: 0;
     width: 100%;
-    /* Ocultar los nombres de los sub-enlaces si la sidebar está colapsada */
     opacity: 0;
     pointer-events: none;
-    transition: opacity .5s ease-in-out;
+    transition: height .5s ease-in-out, padding .5s ease-in-out, opacity .5s ease-in-out;
 }
 
 .collapse-menu.showCollapse {
-    height: auto; /* Permite que el contenido defina la altura */
-    padding: 0.75rem 0; /* Ajusta el padding para los sublinks */
+    height: auto;
+    padding: 0.75rem 0;
     opacity: 1;
     pointer-events: auto;
 }
 
-/* Cuando la sidebar está colapsada (no tiene 'expander'), ocultar los sub-enlaces */
 .l-navbar:not(.expander) .collapse-menu {
-    height: 0; /* Asegura que esté colapsado */
+    height: 0;
     padding: 0;
     opacity: 0;
     pointer-events: none;
-    transition: none; /* Deshabilita la transición para una ocultación instantánea al colapsar la barra lateral */
+    transition: none;
 }
-
 
 .collapse-sub-link {
     color: var(--sub-color);
@@ -339,269 +327,100 @@ a {
     transition: .5s;
 }
 
-/* --- Media Queries para responsividad --- */
+/* Overlays */
+/* Mobile */
+.mobile-sidebar-overlay {
+    position: fixed;
+    top: var(--header-height);
+    left: 0;
+    width: 100vw;
+    height: calc(100vh - var(--header-height));
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(3px);
+    z-index: 98;
+    cursor: pointer;
+}
+/* Desktop */
+.desktop-sidebar-overlay {
+    position: fixed;
+    top: var(--header-height);
+    left: var(--nav-expanded-width);
+    width: calc(100vw - var(--nav-expanded-width));
+    height: calc(100vh - var(--header-height));
+    background-color: rgba(0, 0, 0, 0.15);
+    backdrop-filter: blur(2px);
+    z-index: 98;
+    cursor: pointer;
+}
 
-/* Desktop (>= 768px de ancho) */
-@media screen and (min-width: 768px) {
-    /* Por defecto, la barra lateral está colapsada en desktop */
+@media (max-width: 767px) {
+    .desktop-sidebar-overlay {
+        display: none;
+    }
+}
+@media (min-width: 768px) {
+    .mobile-sidebar-overlay {
+        display: none;
+    }
+}
+
+/* Responsividad Básica */
+@media (min-width: 768px) {
     body {
-        padding-left: calc(var(--nav-width) + 1rem); /* Margen para sidebar colapsado */
+        padding-left: calc(var(--nav-width) + 1rem);
     }
-
     .l-navbar {
-        left: 0; /* Visible por defecto en desktop */
-        width: var(--nav-width); /* Siempre empieza colapsada por defecto */
-        padding: 1rem 0; /* Ajuste para desktop */
+        left: 0;
+        width: var(--nav-width);
+        padding: 1rem 0;
     }
-
     .header {
-        height: calc(var(--header-height) + 1rem);
-        padding-left: calc(var(--nav-width) + 2rem); /* Alineación del header con la barra lateral colapsada */
+        padding-left: calc(var(--nav-width) + 2rem);
     }
-
     .header-toggle {
-        display: none; /* Oculta el icono de hamburguesa del header en desktop */
+        display: none;
     }
-
-    /* Lógica de HOVER para desktop */
-    @media (hover: hover) {
-        .l-navbar:hover {
-            width: var(--nav-expanded-width); /* Expande al hacer hover */
-        }
-
-        .l-navbar:hover .nav-brand-name,
-        .l-navbar:hover .nav-link-name {
-            opacity: 1; /* Muestra los nombres al hacer hover */
-        }
-
-        .l-navbar:hover .nav-menu-icon {
-            opacity: 0; /* Oculta el icono de hamburguesa al expandir por hover */
-            pointer-events: none; /* Deshabilita clics */
-        }
-
-        /* Ajusta el padding del body y del header cuando la barra lateral se expande por hover */
-        body:has(.l-navbar:hover) {
-            padding-left: calc(var(--nav-expanded-width) + 1rem);
-        }
-
-        .header:has(.l-navbar:hover) {
-            padding-left: calc(var(--nav-expanded-width) + 2rem);
-        }
-    }
-
-    /* Si la barra lateral tiene la clase 'expander' (ej: si se fuerza con JS en desktop) */
-    .l-navbar.expander { /* Esta regla tiene más especificidad, así que aplicará */
+    .l-navbar.expander {
         width: var(--nav-expanded-width);
     }
     .l-navbar.expander .nav-menu-icon {
-        opacity: 0; /* Oculta el icono también cuando se expande por la clase 'expander' */
-        pointer-events: none;
+        opacity: 0; pointer-events: none;
     }
-
-    /* Si el l-navbar.expander se activa en desktop, también mostrar nombres */
     .l-navbar.expander .nav-brand-name,
     .l-navbar.expander .nav-link-name {
         opacity: 1;
     }
 }
 
-/* Mobile (<= 767px de ancho) */
-@media screen and (max-width: 767px) {
-    /* Por defecto, la barra lateral está oculta en mobile */
+@media (max-width: 767px) {
     body {
-        padding-left: 1rem; /* Sin padding adicional del sidebar por defecto */
+        padding-left: 1rem;
     }
-
     .l-navbar {
-        left: -100%; /* Oculta la navbar fuera de la pantalla por defecto en mobile */
-        width: var(--nav-expanded-width); /* En mobile, la sidebar siempre se abre a su ancho expandido */
-        padding: 1rem; /* Ajuste de padding para mobile */
+        left: -100%;
+        width: var(--nav-expanded-width);
+        padding: 1rem;
     }
-
-    /* Cuando la navbar está expandida en mobile (por clase expander) */
     .l-navbar.expander {
-        left: 0; /* Hace visible la navbar al activarse */
+        left: 0;
     }
-
-    /* Ocultar el icono de menú dentro de la navbar en mobile (ya que se usa el del header) */
     .nav-menu-icon {
         display: none;
     }
-
-    /* Mostrar siempre el nav-logo y nav-name en mobile cuando la navbar está abierta (clase expander) */
-    .l-navbar.expander .nav-brand-name, /* Corregido: nav-brand-name */
-    .l-navbar.expander .nav-link-name { /* Corregido: nav-link-name */
+    .l-navbar.expander .nav-brand-name,
+    .l-navbar.expander .nav-link-name {
         opacity: 1;
     }
-
-    /* El nav-brand en mobile no necesita margin-top especial */
     .nav-brand {
         margin-top: 0;
         padding-left: 0;
-        justify-content: center; /* Centrar el logo en mobile si el icono no está */
+        justify-content: center;
     }
     .nav-brand-icon {
-        margin-right: 0.5rem; /* Ajuste para el icono del brand en mobile */
+        margin-right: 0.5rem;
     }
 
     .header-toggle {
-        display: block; /* Asegura que el toggle del header esté visible en mobile */
+        display: block;
     }
-}
-
-/* Overlay para mobile cuando la sidebar está abierta */
-.l-navbar.expander::before {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: var(--nav-expanded-width);
-    width: 100vw;
-    height: 100vh;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: -1;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-}
-
-@media screen and (max-width: 767px) {
-    .l-navbar.expander::before {
-        opacity: 1;
-        pointer-events: auto;
-    }
-}
-
-/* Mejoras en la transición */
-.l-navbar {
-    transition: left 0.3s ease, width 0.3s ease;
-}
-
-/* Efecto de desenfoque en el contenido principal cuando la sidebar está abierta */
-body.body-pd::after {
-    content: '';
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(5px);
-    z-index: 99;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-}
-
-@media screen and (max-width: 767px) {
-    body.body-pd::after {
-        opacity: 1;
-        pointer-events: auto;
-    }
-}
-
-/* Asegurar que el header siempre esté encima del overlay */
-.header {
-    z-index: 100;
-}
-
-/* Suavizar la transición del contenido */
-main {
-    transition: margin-left 0.3s ease;
-}
-/* ===== OVERLAY PARA SIDEBAR MOBILE ===== */
-.mobile-sidebar-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(3px);
-    z-index: 98;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-}
-
-/* Solo mostrar el overlay en mobile cuando la sidebar está expandida */
-@media screen and (max-width: 767px) {
-    .l-navbar.expander ~ .mobile-sidebar-overlay {
-        opacity: 1;
-        pointer-events: auto;
-    }
-}
-
-/* Asegurar que el header esté siempre encima del overlay */
-.header {
-    z-index: 100;
-}
-
-/* Suavizar transiciones */
-.l-navbar {
-    transition: left 0.3s ease, width 0.3s ease;
-}
-
-main {
-    transition: margin-left 0.3s ease;
-}
-/* ===== ANIMACIONES MEJORADAS ===== */
-/* Efecto para inputs del formulario */
-.form-control-animated {
-    transition: all 0.3s ease;
-    border: 1px solid var(--color-medium-blue);
-}
-
-.form-control-animated:focus {
-    border-color: var(--first-color);
-    box-shadow: 0 0 0 0.2rem rgba(12, 93, 244, 0.25);
-    transform: scale(1.02);
-}
-
-/* Efecto para grupos de formulario */
-.form-group-animated {
-    transition: all 0.3s ease;
-}
-
-.form-group-animated:hover {
-    transform: translateX(5px);
-}
-
-/* Animación para alerts */
-.animated-alert {
-    animation: fadeIn 0.5s ease-in-out;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; transform: translateY(-20px); }
-    to { opacity: 1; transform: translateY(0); }
-}
-
-/* Efecto mejorado para nav-links */
-.nav-link-animated {
-    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-    transform: perspective(100px) translateZ(0);
-}
-
-.nav-link-animated:hover {
-    transform: perspective(100px) translateZ(10px);
-    box-shadow: 0 3px 6px rgba(0,0,0,0.16), 0 3px 6px rgba(0,0,0,0.23);
-}
-
-/* Efecto para iconos */
-.nav-link-icon {
-    transition: transform 0.3s ease;
-}
-
-.nav-link-animated:hover .nav-link-icon {
-    transform: scale(1.2);
-}
-
-/* Efecto pulsante mejorado */
-@keyframes pulse {
-    0% { transform: scale(1); box-shadow: 0 0 0 0 rgba(12, 93, 244, 0.7); }
-    70% { transform: scale(1.05); box-shadow: 0 0 0 10px rgba(12, 93, 244, 0); }
-    100% { transform: scale(1); box-shadow: 0 0 0 0 rgba(12, 93, 244, 0); }
-}
-
-.btn-pulse {
-    animation: pulse 2s infinite;
 }

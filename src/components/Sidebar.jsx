@@ -16,6 +16,9 @@ function Sidebar({ esAdmin, estaLogueado, alCerrarSesion, conteoItemsCarrito }) 
     const [isSidebarExpanded, setIsSidebarExpanded] = useState(false);
     // NUEVO ESTADO: Controla el submenú de "Administración"
     const [isSubmenuAdminOpen, setIsSubmenuAdminOpen] = useState(false);
+    // Estados para controlar overlays
+    const [showOverlayMobile, setShowOverlayMobile] = useState(false);
+    const [showOverlayDesktop, setShowOverlayDesktop] = useState(false);
 
     // Función para manejar el toggle de la sidebar
     const toggleSidebar = useCallback(() => {
@@ -29,9 +32,7 @@ function Sidebar({ esAdmin, estaLogueado, alCerrarSesion, conteoItemsCarrito }) 
 
     // NUEVA FUNCIÓN: Maneja el clic en el overlay
     const handleOverlayClick = useCallback(() => {
-        if (window.innerWidth < 768) {
-            closeSidebar();
-        }
+        closeSidebar();
     }, [closeSidebar]);
 
     // Bloquear el scroll del body en mobile cuando la sidebar esté abierta
@@ -47,6 +48,27 @@ function Sidebar({ esAdmin, estaLogueado, alCerrarSesion, conteoItemsCarrito }) 
         return () => {
             document.body.style.overflow = 'auto';
         };
+    }, [isSidebarExpanded]);
+
+    // Efecto para manejar qué overlay mostrar según tamaño de pantalla
+    useEffect(() => {
+        const actualizarOverlay = () => {
+            const esMobile = window.innerWidth < 768;
+            if (isSidebarExpanded && esMobile) {
+                setShowOverlayMobile(true);
+                setShowOverlayDesktop(false);
+            } else if (isSidebarExpanded && !esMobile) {
+                setShowOverlayDesktop(true);
+                setShowOverlayMobile(false);
+            } else {
+                setShowOverlayMobile(false);
+                setShowOverlayDesktop(false);
+            }
+        };
+
+        actualizarOverlay();
+        window.addEventListener('resize', actualizarOverlay);
+        return () => window.removeEventListener('resize', actualizarOverlay);
     }, [isSidebarExpanded]);
 
     // Efecto para aplicar/remover clases 'expander' y 'body-pd' basadas en el estado
@@ -193,9 +215,18 @@ function Sidebar({ esAdmin, estaLogueado, alCerrarSesion, conteoItemsCarrito }) 
                     </div>
                 </nav>
             </div>
-            {isSidebarExpanded && window.innerWidth < 768 && (
+
+            {/* Overlay para mobile */}
+            {showOverlayMobile && (
                 <div 
                     className="mobile-sidebar-overlay" 
+                    onClick={handleOverlayClick}
+                />
+            )}
+            {/* Overlay para desktop */}
+            {showOverlayDesktop && (
+                <div 
+                    className="desktop-sidebar-overlay" 
                     onClick={handleOverlayClick}
                 />
             )}
