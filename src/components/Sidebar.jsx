@@ -1,7 +1,7 @@
 // frontend-ecommerce/src/components/Sidebar.jsx
 
-import React, { useEffect, useRef, useState, useCallback } from 'react'; // Agregamos useState y useCallback
-import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom'; // Usamos NavLink en lugar de Link para enlaces activos
+import React, { useEffect, useRef, useState, useCallback } from 'react';
+import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import PropTypes from 'prop-types';
 
 // Importa el CSS de la barra lateral
@@ -62,7 +62,7 @@ function Sidebar({ esAdmin, estaLogueado, alCerrarSesion, conteoItemsCarrito }) 
                 document.body.classList.remove('body-pd');
             }
         }
-    }, [isSidebarExpanded]); // Solo afecta mobile
+    }, [isSidebarExpanded]);
 
     useEffect(() => {
         const toggleBtn = document.getElementById('nav-toggle');
@@ -83,7 +83,8 @@ function Sidebar({ esAdmin, estaLogueado, alCerrarSesion, conteoItemsCarrito }) 
     }, [isSidebarExpanded, closeSidebar]);
 
     useEffect(() => {
-        // Aquí podrías agregar lógica para abrir submenús según ruta
+        // Cerrar submenús al cambiar de ruta
+        setIsSubmenuAdminOpen(false);
     }, [ubicacion.pathname]);
 
     const manejarCerrarSesionYNavegar = () => {
@@ -104,12 +105,9 @@ function Sidebar({ esAdmin, estaLogueado, alCerrarSesion, conteoItemsCarrito }) 
                 <div className="header-toggle btn-animated" id="nav-toggle" onClick={toggleSidebar}>
                     <i className='fas fa-bars'></i>
                 </div>
-                {/* <div className="header-img">
-                    <img src="https://i.imgur.com/your-profile-image.jpg" alt="" />
-                </div> */}
             </header>
 
-            <div className={`l-navbar`} id="navbar" ref={navRef}>
+            <div className={`l-navbar ${isSidebarExpanded ? 'expander' : ''}`} id="navbar" ref={navRef}>
                 <nav className="nav">
                     <div>
                         <div className="nav-menu-icon btn-animated" onClick={toggleSidebar}>
@@ -123,54 +121,55 @@ function Sidebar({ esAdmin, estaLogueado, alCerrarSesion, conteoItemsCarrito }) 
 
                         <div className="nav-list">
                             <NavLink to="/" className={({ isActive }) =>
-                                `nav-link-animated ${isActive ? 'active active-inicio' : ''}`
+                                `nav-link ${isActive ? 'active active-inicio' : ''}`
                             } onClick={handleNavLinkClick}>
                                 <i className='fas fa-home nav-link-icon'></i>
                                 <span className="nav-link-name">Inicio</span>
                             </NavLink>
 
                             <NavLink to="/carrito" className={({ isActive }) =>
-                                `nav-link nav-link-animated ${isActive ? 'active' : ''}`
+                                `nav-link ${isActive ? 'active' : ''}`
                             } onClick={handleNavLinkClick}>
                                 <i className='fas fa-shopping-cart nav-link-icon'></i>
                                 <span className="nav-link-name">Carrito {conteoItemsCarrito > 0 && `(${conteoItemsCarrito})`}</span>
                             </NavLink>
 
                             {esAdmin && (
-                                <div className={`collapse ${isSubmenuAdminOpen ? 'showCollapse' : ''}`} onClick={() => setIsSubmenuAdminOpen(!isSubmenuAdminOpen)}>
-                                    <i className='fas fa-cogs nav-link-icon'></i>
-                                    <span className="nav-link-name">Administración</span>
-                                    <i className={`fas fa-chevron-down collapse-link collapse-icon ${isSubmenuAdminOpen ? 'rotate' : ''}`}></i>
-                                </div>
-                            )}
-                            {esAdmin && isSubmenuAdminOpen && (
-                                <div className="collapse-menu showCollapse">
-                                    <NavLink to="/agregar-producto" className="collapse-sub-link" onClick={handleNavLinkClick}>
-                                        Agregar Producto
-                                    </NavLink>
-                                    <NavLink to="/gestionar-productos" className="collapse-sub-link" onClick={handleNavLinkClick}>
-                                        Gestionar Productos
-                                    </NavLink>
-                                </div>
+                                <>
+                                    <div className={`collapse ${isSubmenuAdminOpen ? 'showCollapse' : ''}`} onClick={() => setIsSubmenuAdminOpen(!isSubmenuAdminOpen)}>
+                                        <i className='fas fa-cogs nav-link-icon'></i>
+                                        <span className="nav-link-name">Administración</span>
+                                        <i className={`fas fa-chevron-down collapse-link collapse-icon ${isSubmenuAdminOpen ? 'rotate' : ''}`}></i>
+                                    </div>
+                                    
+                                    <div className={`collapse-menu ${isSubmenuAdminOpen ? 'showCollapse' : ''}`}>
+                                        <NavLink to="/agregar-producto" className="collapse-sub-link" onClick={handleNavLinkClick}>
+                                            Agregar Producto
+                                        </NavLink>
+                                        <NavLink to="/gestionar-productos" className="collapse-sub-link" onClick={handleNavLinkClick}>
+                                            Gestionar Productos
+                                        </NavLink>
+                                    </div>
+                                </>
                             )}
 
                             {!estaLogueado ? (
                                 <>
                                     <NavLink to="/registro" className={({ isActive }) =>
-                                        `nav-link nav-link-animated ${isActive ? 'active' : ''}`
+                                        `nav-link ${isActive ? 'active' : ''}`
                                     } onClick={handleNavLinkClick}>
                                         <i className='fas fa-user-plus nav-link-icon'></i>
                                         <span className="nav-link-name">Registro</span>
                                     </NavLink>
                                     <NavLink to="/login" className={({ isActive }) =>
-                                        `nav-link nav-link-animated ${isActive ? 'active' : ''}`
+                                        `nav-link ${isActive ? 'active' : ''}`
                                     } onClick={handleNavLinkClick}>
                                         <i className='fas fa-sign-in-alt nav-link-icon'></i>
                                         <span className="nav-link-name">Iniciar Sesión</span>
                                     </NavLink>
                                 </>
                             ) : (
-                                <button type="button" onClick={manejarCerrarSesionYNavegar} className="nav-link nav-link-animated logout-button-sidebar">
+                                <button type="button" onClick={manejarCerrarSesionYNavegar} className="nav-link logout-button-sidebar">
                                     <i className='fas fa-sign-out-alt nav-link-icon'></i>
                                     <span className="nav-link-name">Cerrar Sesión</span>
                                 </button>

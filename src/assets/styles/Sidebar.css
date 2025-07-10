@@ -143,6 +143,31 @@ body.body-pd {
         opacity: 0;
         pointer-events: none;
     }
+    
+    /* Nuevo: Hover para desktop */
+    .l-navbar {
+        left: 0;
+        width: var(--nav-width);
+        padding: 1rem 0;
+    }
+    
+    .l-navbar:hover {
+        width: var(--nav-expanded-width);
+    }
+    
+    .l-navbar:hover .nav-brand-name,
+    .l-navbar:hover .nav-link-name {
+        opacity: 1;
+    }
+    
+    .l-navbar:hover .nav-menu-icon {
+        opacity: 0;
+        pointer-events: none;
+    }
+    
+    .l-navbar:hover .nav-brand {
+        margin-top: 0;
+    }
 }
 @media (max-width: 767px) {
     .nav-menu-icon {
@@ -178,7 +203,8 @@ body.body-pd {
     overflow: hidden;
 }
 
-.l-navbar.expander .nav-brand-name {
+.l-navbar.expander .nav-brand-name,
+.l-navbar:hover .nav-brand-name {
     opacity: 1;
 }
 
@@ -193,29 +219,31 @@ body.body-pd {
     font-weight: 600;
     display: flex;
     align-items: center;
-    padding: 1rem 0;
-    margin-bottom: 0.5rem; /* 🔽 Reducción de separación entre botones */
+    padding: 0.8rem 0; /* Ajuste de padding */
+    margin-bottom: 0.3rem; /* Reducción de separación */
     border-radius: .5rem;
     transition: .3s;
     cursor: pointer;
+    width: 100%;
 }
 
 .nav-link-icon {
     font-size: 1.5rem;
     margin-right: 1rem;
     padding-left: 0.8rem;
-
+    min-width: calc(var(--nav-width) - 1rem); /* Asegura alineación */
 }
 
 .nav-link-name {
     opacity: 0;
-    padding-bottom: 2rem;
     transition: opacity .5s ease-in-out;
     white-space: nowrap;
     overflow: hidden;
+    padding-bottom: 0; /* Eliminamos el padding extra */
 }
 
-.l-navbar.expander .nav-link-name {
+.l-navbar.expander .nav-link-name,
+.l-navbar:hover .nav-link-name {
     opacity: 1;
 }
 
@@ -242,13 +270,13 @@ body.body-pd {
     border: none;
     width: 100%;
     text-align: left;
-    padding: 1rem 0;
+    padding: 0.8rem 0; /* Igual que nav-link */
     cursor: pointer;
     color: var(--sub-color);
     font-weight: 600;
     display: flex;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 0.3rem; /* Igual que nav-link */
     border-radius: .5rem;
     transition: .3s;
 }
@@ -256,7 +284,7 @@ body.body-pd {
 /* Separación extra entre botones de abajo */
 .nav-list > .nav-link:nth-last-child(-n+2),
 .logout-button-sidebar {
-    margin-top: 1.5rem;
+    margin-top: 1rem; /* Reducido para uniformidad */
 }
 
 .logout-button-sidebar:hover {
@@ -270,8 +298,8 @@ body.body-pd {
     align-items: center;
     justify-content: space-between;
     width: 100%;
-    padding: 1rem 0;
-    margin-bottom: 1rem;
+    padding: 0.8rem 0; /* Igual que nav-link */
+    margin-bottom: 0.3rem; /* Igual que nav-link */
     border-radius: .5rem;
     transition: .3s;
     cursor: pointer;
@@ -302,7 +330,7 @@ body.body-pd {
 
 .collapse-menu.showCollapse {
     height: auto;
-    padding: 0.75rem 0;
+    padding: 0.5rem 0; /* Reducido */
     opacity: 1;
     pointer-events: auto;
 }
