@@ -10,6 +10,7 @@
 
 /* Estilos base */
 body {
+  margin-top: auto ;
   background-color: var(--color-light);
   color: var(--color-primary);
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
